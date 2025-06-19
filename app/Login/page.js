@@ -1,12 +1,32 @@
+"use client";
 import React from "react";
+import { Montserrat } from "next/font/google";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
+const inter = Montserrat({
+  subsets: ["latin"],
+  weight: ["200", "400", "500", "600", "700"],
+});
 const Login = () => {
   return (
-    <div>
-      
-      <div className="flex flex-col items-center justify-center min-h-screen ">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 1.2,        // Slower entrance
+        delay: 0.2,           // Small delay for drama
+        ease: [0.22, 1, 0.36, 1], // Smooth, natural curve
+      }}
+    >
+      <div
+        className={
+          "flex flex-col font-light items-center justify-center min-h-screen " +
+          inter.className
+        }
+      >
         <h1 className="text-4xl font-bold text-[#fca000] mb-8">
-          Login / Signup
+          Welcome back!
         </h1>
         <form className="bg-[#191919] p-8 rounded-lg shadow-md w-96">
           <div className="mb-4">
@@ -38,25 +58,28 @@ const Login = () => {
             Login
           </button>
         </form>
-          <div className="activities">
-            <p className="text-center text-white mt-4">
-              Forgot your password?{" "}
-              <a
-                href="/reset-password"
-                className="text-[#fca000] hover:underline"
-              >
-                Reset it
-              </a>
-            </p>
-            <p className="text-center text-white mt-4">
-              Don't have an account?
-              <a href="/dashboard/Billing" className="text-[#fca000] hover:underline">
-                Sign Up
-              </a>
-            </p>
-          </div>
+        <div className="activities">
+          <p className="text-center text-white mt-4">
+            Forgot your password?{" "}
+            <a
+              href="/reset-password"
+              className="text-[#fca000] hover:underline"
+            >
+              Reset it
+            </a>
+          </p>
+          <p className="text-center text-white mt-4">
+            Don't have an account?
+            <a
+              href="/dashboard/Billing"
+              className="text-[#fca000] hover:underline"
+            >
+              Sign Up
+            </a>
+          </p>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

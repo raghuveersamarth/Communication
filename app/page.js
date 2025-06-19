@@ -1,191 +1,248 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import useScroll from "framer-motion"
 import Footer from "@/components/Footer";
+import RevealOnScroll from "@/components/RevealOnScroll";
 
+const CTAButton = ({ href, children }) => (
+  <Link
+    href={href}
+    className="bg-amber-500 hover:bg-amber-600 text-white font-medium text-lg px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 w-full max-w-xs text-center shadow-md"
+  >
+    {children}
+  </Link>
+);
+
+const FeatureCard = ({ icon, title, description }) => (
+  <div className="bg-[#171717] text-[white] p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-full border border-gray-100">
+    <div className="flex flex-col items-center text-center h-full">
+      <img
+        src={icon}
+        alt={title}
+        className="w-16 h-16 mb-4 object-contain"
+      />
+      <h3 className="text-xl font-bold mb-3 text-white">{title}</h3>
+      <p className="text-[#c4c4c4] flex-grow">{description}</p>
+    </div>
+  </div>
+);
+
+const BenefitCard = ({ title, description }) => (
+  <div className="bg-[#171717] text-[white] p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-full ">
+    <h3 className="text-xl font-bold mb-3 text-center text-[#ffffff]">
+      {title}
+    </h3>
+    <p className="text-[#c4c4c4] text-center">{description}</p>
+  </div>
+);
 
 export default function Home() {
+  const features = [
+    {
+      icon: "/images/communication-icon.png",
+      title: "Communication Course",
+      description: "Turn stutters into strength. Speak clearly, confidently, and lead every room you enter.",
+    },
+    {
+      icon: "/images/chat-icon.png",
+      title: "Community Chat",
+      description: "Share lessons, ask questions, and grow your communication with others.",
+    },
+    {
+      icon: "/images/events-icon.png",
+      title: "Exclusive Events",
+      description: "Gain access to in-person and virtual events with industry leaders.",
+    },
+  ];
 
-   return (
-    <>
+  const benefits = [
+    {
+      title: "Shy Communicators",
+      description: "For those who freeze up or feel invisible. Learn to speak clearly and finally be heard.",
+    },
+    {
+      title: "College Students",
+      description: "Build fluency, stage presence, and real-world speaking power for your future.",
+    },
+    {
+      title: "Content Creators",
+      description: "Struggle to speak fluently on camera? Learn to own your voice and hook your viewers.",
+    },
+    {
+      title: "Career Climbers",
+      description: "Get noticed, speak with confidence, and earn the respect that gets promotions.",
+    },
+    {
+      title: "Aspiring Entrepreneurs",
+      description: "Gain the voice, presence, and clarity to pitch, lead, and sell your vision.",
+    },
+    {
+      title: "Public Speakers",
+      description: "Refine your delivery, overcome anxiety, and captivate any audience.",
+    },
+  ];
 
-      <div
-        className="flex text-[]   flex-col items-center gap-28 min-h-screen bg-[#000000] [background:radial-gradient(190%_170%_at_50%_5%,#101010_50%,#fd9800_100%)]"
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: -1,
-          minHeight: "100vh",
-          width: "100vw",
-          overflow: "auto",
-        }}
-      >
-        <section className="video mt-16">
-          <div className="heading font-serif  text-[37px] text-[hsl(36,100%,50%)] text-center text-4xl">
-            {/* <img src="" alt="" /> */}
-            <h1>Communication Mastery</h1>
-          </div>
-          <div className="intro-video flex flex-col items-center justify-center min-h-screen ">
-            <video
-              className="w-[50vw] rounded-2xl shadow-lg"
-              src="/videos/himeshvid.mp4"
-              controls
-            ></video>
-
-            <button className="bg-[#fca000] text-white text-[24px] px-6 py-2 rounded-lg mt-6 hover:bg-[#f9c388] transition cursor-pointer w-[30rem] duration-300">
-              <Link href="/Signup" className="text-white">
-                Join
-              </Link>
-            </button>
-          </div>
-        </section>
-        <section className="offers text-center">
-          <h1 className="m-1.5">
-            <span className="text-2xl m-7 font-bold text-[#fca000]">
-              What you will learn
-            </span>
+  return (
+    <main className="relative text-gray-800 ">
+      {/* Hero Section */}
+      <section className="min-h-screen flex flex-col items-center justify-center pt-16 pb-28 px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          
+          className="text-center max-w-4xl mx-auto"
+        >
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-amber-500 mb-8">
+            Communication Mastery
           </h1>
-          <div className=" flex gap-10 flex-col">
-            <div className="floater justify-between flex flex-col bg-[#141414] text-white p-6 rounded-[20px] shadow-lg m-4">
-              <div className="flex items-center w-[45vw] justify-around p-1.5">
-                <img src="https://img-v2-prod.whop.com/unsafe/rs:fit:128:0/plain/https%3A%2F%2Fassets-2-prod.whop.com%2Fuploads%2Fuser_14390386%2Fimage%2Fexperiences%2F2025-05-22%2F827feabd-111a-494d-9a26-1091cc8e025f@avif" />
-                <div className="flex flex-col">
-                  <h2 className="text-xl font-bold ">Communication course</h2>
-                  <p className="text-lg text-[#a3a3a3]">
-                    Turn stutters into strength. Speak clearly, confidently, and
-                    lead every room you enter.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="floater justify-between flex flex-col bg-[#141414] text-white p-6 rounded-[20px] shadow-lg m-4">
-              <div className="flex items-center w-[45vw] justify-around p-1.5">
-                <img
-                  src="https://img-v2-prod.whop.com/unsafe/rs:fit:128:0/plain/https%3A%2F%2Fassets-2-prod.whop.com%2Fuploads%2Fuser_14390386%2Fimage%2Fexperiences%2F2025-05-22%2F7ee05cd3-0052-4719-ade0-9b977826e9eb@avif"
-                  className="w-[120px]"
-                />
-                <div className="flex flex-col">
-                  <h2 className="text-xl font-bold ">
-                    Communication course chat
-                  </h2>
-                  <p className="text-lg text-[#a3a3a3]">
-                    Share lessons, ask questions, and grow your communication
-                    with others.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="floater justify-between flex flex-col bg-[#141414] text-white p-6 rounded-[20px] shadow-lg m-4">
-              <div className="flex items-center w-[45vw] justify-around p-1.5">
-                <img
-                  src="https://img-v2-prod.whop.com/unsafe/rs:fit:128:0/plain/https%3A%2F%2Fassets.whop.com%2Fuploads%2F2024-03-07%2Fuser_2412964_7d4ceeef-d234-4c7a-9390-8dc41614f335.png@avif"
-                  className="w-[120px] rounded-4xl"
-                />
-                <div className="flex flex-col">
-                  <h2 className="text-xl font-bold ">Events</h2>
-                  <p className="text-lg text-[#a3a3a3]">
-                    Gain access to in-person and virtual exclusive events.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="who-this-is-for mt-8 flex flex-col items-center justify-center">
-          <h1 className=" text-2xl font-bold text-[#fca000] ">
-            Whom does it benefit the most?
-          </h1>
-          <div className="grid m-5 grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 mt-6 ">
-            <div className="box *:flex flex-col items-center justify-center w-[30vw] bg-[#141414] text-white p-6 rounded-[20px] shadow-lg m-4">
-              <h2 className="text-center">shy communicators</h2>
-              <p className="text-sm text-[#a3a3a3]">
-                For guys who freeze up, stutter, or feel invisible. Learn to
-                speak clearly, confidently, and finally be heard.
-              </p>
-            </div>
-            <div className="box *:flex flex-col items-center justify-center w-[30vw] bg-[#141414] text-white p-6 rounded-[20px] shadow-lg m-4">
-              <h2 className="text-center">College students</h2>
-              <p className="text-sm text-[#a3a3a3]">
-                For students with big goals but weak voice. This builds your
-                fluency, stage presence, and real-world speaking power.
-              </p>
-            </div>
-            <div className="box *:flex flex-col items-center justify-center w-[30vw] bg-[#141414] text-white p-6 rounded-[20px] shadow-lg m-4">
-              <h2 className="text-center">Content creators</h2>
-              <p className="text-sm text-[#a3a3a3]">
-                For YouTubers or influencers who struggle to speak fluently on
-                camera. Learn to own your voice and hook your viewers.
-              </p>
-            </div>
-            <div className="box *:flex flex-col items-center justify-center w-[30vw] bg-[#141414] text-white p-6 rounded-[20px] shadow-lg m-4">
-              <h2 className="text-center">Career Climbers</h2>
-              <p className="text-sm text-[#a3a3a3]">
-                For professionals stuck in silence. Get noticed, speak with
-                confidence, and earn the respect that gets promotions.
-              </p>
-            </div>
-            <div className="box *:flex flex-col items-center justify-center w-[30vw] bg-[#141414] text-white p-6 rounded-[20px] shadow-lg m-4">
-              <h2 className="text-center">Aspiring entrepreneurs</h2>
-              <p className="text-sm text-[#a3a3a3]">
-                For dreamers building brands or businesses. This gives you the
-                voice, presence, and clarity to pitch, lead, and sell.
-              </p>
-            </div>
-          </div>
-        </section>
+          <p className="text-lg md:text-xl text-white mb-12 max-w-2xl mx-auto">
+            Transform your speaking skills and command every conversation with
+            confidence
+          </p>
 
-        <section className="mt-8 flex flex-col items-center gap-10 justify-center">
-          <h1 className="text-2xl text-center font-bold text-[#fd9800]">
-            Why this course?
-          </h1>
-          <div className="flex gap-3.5 flex-col items-center justify-center w-[70vw] mt-4">
-            <p className="text-lg text-[#d3d3d3] mb-4">
-              This course is designed to help you overcome communication
-              barriers and develop the skills needed to express yourself clearly
-              and confidently. Whether you struggle with stuttering, shyness, or
-              simply want to improve your speaking abilities, this course will
-              provide you with the tools and techniques to transform your
-              communication style.
+          <div className="flex flex-col items-center">
+            <div className="w-full max-w-4xl aspect-video rounded-xl  shadow-2xl mb-8 border-2 ">
+              <video
+                className="w-full h-full object-cover"
+                src="https://youtu.be/nGyVjye1IUc"
+                controls
+                poster="/images/video-poster.jpg"
+                preload="metadata"
+                playsInline
+              />
+            </div>
+
+            <CTAButton href="/dashboard/Billing">
+              Join Now
+            </CTAButton>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* What You'll Learn Section */}
+      <section className="py-20 flex flex-col items-center justify-center px-4 max-w-7xl mx-auto">
+        <RevealOnScroll>
+          <h2 className="text-3xl font-bold text-amber-500 text-center mb-16">
+            What You Will Learn
+          </h2>
+        </RevealOnScroll>
+
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
+          {features.map((item, index) => (
+            <RevealOnScroll key={index} delay={index * 0.2}>
+              <FeatureCard {...item} />
+            </RevealOnScroll>
+          ))}
+        </div>
+
+        <RevealOnScroll className="flex justify-center mt-12 self-center">
+          <CTAButton href="/dashboard/Billing">
+            Start Learning
+          </CTAButton>
+        </RevealOnScroll>
+      </section>
+
+      {/* Who Benefits Section */}
+      <section className="py-20 px-4  text-[white] flex flex-col items-center justify-center">
+        <div className="max-w-7xl mx-auto mb-20">
+          <RevealOnScroll>
+            <h2 className="text-3xl font-bold text-amber-500 text-center mb-16">
+              Who Benefits Most
+            </h2>
+          </RevealOnScroll>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {benefits.map((item, index) => (
+              <RevealOnScroll key={index} delay={index * 0.2}>
+                <BenefitCard {...item} />
+              </RevealOnScroll>
+            ))}
+          </div>
+        </div>
+
+        <RevealOnScroll className="flex justify-center mt-12 self-center">
+          <CTAButton href="/dashboard/Billing">
+            Join Program
+          </CTAButton>
+        </RevealOnScroll>
+      </section>
+
+      {/* Why This Course Section */}
+      <section className="py-20 px-4 max-w-5xl mx-auto  text-gray-800 flex flex-col items-center justify-center">
+        <RevealOnScroll>
+          <h2 className="text-3xl font-bold text-amber-500 text-center mb-12">
+            Why This Course?
+          </h2>
+        </RevealOnScroll>
+
+        <div className="space-y-6 text-lg text-white mb-16">
+          <RevealOnScroll>
+            <p>
+              This comprehensive program is designed to systematically dismantle
+              communication barriers while building unshakable confidence.
+              Unlike generic public speaking courses, we focus on the root
+              causes of speech anxiety and provide targeted solutions that
+              deliver real results.
             </p>
-            <p className="text-lg text-[#d3d3d3]">
-              Through a combination of practical exercises, personalized
-              coaching, and a supportive community, you will learn how to master
-              the art of communication. You will gain the confidence to speak in
-              public, engage in conversations, and express your thoughts
-              effectively.
+          </RevealOnScroll>
+
+          <RevealOnScroll>
+            <p>
+              Through neuroscience-backed techniques and personalized coaching,
+              you'll develop a commanding presence that naturally draws people
+              in. Our methods have helped thousands transform from hesitant
+              speakers to compelling communicators.
             </p>
-          </div>
-          <h1 className="text-2xl text-center font-bold text-[#fd9800] mt-8 mb-4">
-            About the Coach
-          </h1>
-          <div className="flex gap-5 w-[70vw] rounded-2xl  p-6">
-            {/* add coach's photo
-             */}
+          </RevealOnScroll>
+        </div>
+
+        {/* Coach Section */}
+        <RevealOnScroll>
+          <h2 className="text-3xl font-bold text-amber-500 text-center mb-12">
+            About Your Coach
+          </h2>
+        </RevealOnScroll>
+
+        <div className="flex flex-col md:flex-row gap-8 items-center text-[white] p-8 rounded-xl shadow-md">
+          <div className="w-full md:w-1/3">
             <img
-              src="him.jpg"
+              src="/him.jpg"
               alt="Coach Himesh"
-              className="h-[50vh] rounded-lg mb-4"
-            ></img>
-            <div>
-              <h2 className="text-2xl text-[#fd9800] font-bold mb-4">Himesh</h2>
-              <p className="text-lg text-[#bcbcbc]">
-                I am a passionate coach dedicated to helping individuals
-                overcome their communication challenges. With years of
-                experience, I specialize in transforming stutters into
-                strengths, enabling my clients to speak clearly and confidently.
-              </p>
-              <p className="mt-4 text-lg text-[#bcbcbc]">
-                Join me on this journey to master the art of communication and
-                lead every room you enter with confidence.
-              </p>
-            </div>
+              className="rounded-lg shadow-lg w-full h-auto object-cover"
+              loading="lazy"
+            />
           </div>
-        </section>
-        <Footer />
-      </div>
-    </>
+
+          <div className="w-full md:w-2/3 space-y-4">
+            <h3 className="text-2xl font-bold text-amber-500">Himesh</h3>
+            <p className="text-white">
+              With over a decade of experience in communication coaching, I've
+              dedicated my career to helping individuals find their authentic
+              voice. My approach combines proven techniques with personalized
+              strategies to address each student's unique challenges.
+            </p>
+            <p className="text-white">
+              I've worked with everyone from Fortune 500 executives to aspiring
+              YouTubers, helping them overcome speech anxiety, refine their
+              delivery, and develop a magnetic speaking presence.
+            </p>
+            <p className="text-white font-medium">
+              My mission is to equip you with the skills to express yourself
+              with clarity, confidence, and conviction in any situation.
+            </p>
+          </div>
+        </div>
+
+        <RevealOnScroll className="flex justify-center mt-16 self-center">
+          <CTAButton href="/dashboard/Billing">
+            Transform Your Communication
+          </CTAButton>
+        </RevealOnScroll>
+      </section>
+
+      <Footer />
+    </main>
   );
 }
