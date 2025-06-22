@@ -17,10 +17,10 @@ const Navbar = () => {
     "/ResetPassword",
   ];
   const pathname = usePathname();
-  console.log("Current Pathname:", pathname);
+
 
   if (hiddenRoutes.includes(pathname)) {
-    console.log("Navbar is hidden for this route:", pathname);
+
     return null;
   }
   return (

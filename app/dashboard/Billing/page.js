@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import RevealOnScroll from "@/components/RevealOnScroll";
 import CheckoutButton from "@/components/CheckoutButton";
+import { supabase } from "@/app/lib/supabase";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,6 +13,8 @@ const inter = Inter({
 });
 
 const BillingForm = () => {
+  const [passwordseen, setpasswordseen] = useState(false);
+  const [passwordseen2, setpasswordseen2] = useState(false);
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -48,9 +51,63 @@ const BillingForm = () => {
 
   const showConfirmPasswordError = form.confirmPassword && !passwordsMatch;
 
-  const UserActivation = (e) => {
-    let ndata = Object.fromEntries(e);
-    console.log(ndata);
+ const UserActivation = async (e) => {
+
+    try {
+      // 1. Register the user
+      const { data: { user }, error: authError } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: {
+            username: form.username,
+            // Add any other user metadata here
+          }
+        }
+      });
+
+      if (authError) throw authError;
+
+      // 2. Create Razorpay order (only if registration succeeded)
+      const res = await fetch('/api/razorpay/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          courseId: "comm-course", // Your course ID
+          userId: user.id,         // From Supabase auth
+          amount: 18397           // ₹18,397 in paise
+        })
+      });
+
+      const { orderId, error: orderError } = await res.json();
+      if (orderError) throw new Error(orderError);
+
+      // 3. Open Razorpay payment modal
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: 18397 * 100,
+        currency: "INR",
+        order_id: orderId,
+        name: "Communication Course",
+        description: "One-time payment",
+        handler: function(response) {
+          // Payment succeeded - webhook will handle the rest
+          window.location.href = `/payment-success?payment_id=${response.razorpay_payment_id}`;
+        },
+        prefill: {
+          name: form.username,
+          email: form.email
+        },
+        theme: { color: "#F37254" }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+      console.error(error);
+    }
   };
 
   return (
@@ -95,37 +152,48 @@ const BillingForm = () => {
         {/* Password Field */}
         <label>
           <RevealOnScroll delay={0.6}>
+            <div className="relative">
+
             <input
-              className="mb-4 p-2 w-[400px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30"
+              className=" mb-4 p-2 w-[400px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30"
               name="password"
-              type="password"
+              type={passwordseen?"password":"text"}
               value={form.password}
               onChange={handleChange}
               placeholder="Create a Password"
               required
-            />
+              />
+            <Image onClick={()=>setpasswordseen(!passwordseen)} className="absolute cursor-pointer top-[10px] left-[370px]"  src={ passwordseen?"/svgs/eyes.svg":"/svgs/eyesnot.svg"} alt="eyes" width={20} height={20} />
+              </div>
           </RevealOnScroll>
         </label>
 
         {/* Password Requirements Error */}
         {showPasswordError && (
           <div className="w-[70%]">
-            <p className="text-red-500 text-[15px]">Password must contain: 1 special character, 1 capital letter and one Number</p>
+            <p className="text-red-500 text-[15px]">
+              Password must contain: 1 special character, 1 capital letter and
+              one Number
+            </p>
           </div>
         )}
 
         {/* Confirm Password Field */}
         <label>
-          <RevealOnScroll delay={0.8}>
+          <RevealOnScroll delay={0.6}>
+            <div className="relative">
+
             <input
-              className="mb-4 p-2 w-[400px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30"
+              className=" mb-4 p-2 w-[400px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30"
               name="confirmPassword"
-              type="password"
+              type={passwordseen2?"password":"text"}
               value={form.confirmPassword}
               onChange={handleChange}
               placeholder="Confirm Password"
               required
-            />
+              />
+            <Image onClick={()=>setpasswordseen2(!passwordseen2)} className="absolute cursor-pointer top-[10px] left-[370px]"  src={ passwordseen2?"/svgs/eyes.svg":"/svgs/eyesnot.svg"} alt="eyes" width={20} height={20} />
+              </div>
           </RevealOnScroll>
         </label>
 
