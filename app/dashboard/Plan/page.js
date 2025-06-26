@@ -100,7 +100,6 @@ const Plan = () => {
             >
               <Link
                 href="/dashboard/Billing"
-                target="_blank"
                 rel="noopener noreferrer"
                 className="border text-center border-amber-500 text-white px-8 py-2 rounded-lg hover:bg-amber-600 transition-colors font-medium"
               >

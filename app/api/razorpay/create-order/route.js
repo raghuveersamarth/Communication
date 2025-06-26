@@ -17,6 +17,12 @@ export async function POST(req) {
         { status: 400 }
       );
     }
+    else if (typeof amount !== 'number' || amount <= 0) {
+      return NextResponse.json(
+        { error: 'Invalid amount' },
+        { status: 400 }
+      );
+    }
 
     // Convert IDs to strings to ensure slice() works
     const courseStr = String(courseId);
@@ -38,8 +44,6 @@ export async function POST(req) {
 
     return NextResponse.json({
       orderId: order.id,
-      amount: order.amount,
-      currency: order.currency
     });
 
   } catch (error) {

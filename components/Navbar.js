@@ -9,12 +9,12 @@ import { usePathname } from "next/navigation";
 const Navbar = () => {
   const hiddenRoutes = [
     "/Courses",
-    "about",
+    "/about",
     "/dashboard/Billing",
     "/dashboard/Plan",
     "/Login",
-    "/Signup",
     "/ResetPassword",
+    "/payment-success"
   ];
   const pathname = usePathname();
 
@@ -37,17 +37,8 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="space-x-4">
-            <Link
-              href="/Courses"
-              className="text-[#fca000] hover:text-gray-300"
-            >
-              Explore courses
-            </Link>
             <Link href="/about" className="text-white hover:text-gray-300">
               About
-            </Link>
-            <Link href="/Contact" className="text-white hover:text-gray-300">
-              Contact
             </Link>
             <Link href="/Login" className="text-white hover:text-gray-300">
               Login

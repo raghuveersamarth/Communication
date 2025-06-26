@@ -6,13 +6,11 @@ import RevealOnScroll from "@/components/RevealOnScroll";
 import CheckoutButton from "@/components/CheckoutButton";
 import { supabase } from "@/app/lib/supabase";
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: "200",
-  display: "swap",
-});
+import { useRouter } from "next/navigation";
+const inter = Inter({ subsets: ["latin"], weight: "200", display: "swap" });
 
 const BillingForm = () => {
+  const router = useRouter();
   const [passwordseen, setpasswordseen] = useState(false);
   const [passwordseen2, setpasswordseen2] = useState(false);
   const [form, setForm] = useState({
@@ -26,63 +24,53 @@ const BillingForm = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Password validation checks
   const isPasswordValid = (password) => {
-    const minLength = password.length >= 8;
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasSpecialChar = /[!@#$%^&*]/.test(password);
-    const hasNumber = /\d/.test(password);
-    return minLength && hasUpperCase && hasSpecialChar && hasNumber;
+    return (
+      password.length >= 8 &&
+      /[A-Z]/.test(password) &&
+      /[!@#$%^&*]/.test(password) &&
+      /\d/.test(password)
+    );
   };
 
-  // Form validation states
   const isFormIncomplete =
     !form.username || !form.email || !form.password || !form.confirmPassword;
 
-  const passwordsMatch =
-    form.password &&
-    form.confirmPassword &&
-    form.password === form.confirmPassword;
-
-  const passwordMeetsRequirements =
-    form.password && isPasswordValid(form.password);
-
-  const showPasswordError = form.password && !isPasswordValid(form.password);
-
+  const passwordsMatch = form.password === form.confirmPassword;
+  const passwordMeetsRequirements = isPasswordValid(form.password);
+  const showPasswordError = form.password && !passwordMeetsRequirements;
   const showConfirmPasswordError = form.confirmPassword && !passwordsMatch;
 
- const UserActivation = async (e) => {
-
+  const UserActivation = async (e) => {
     try {
-      // 1. Register the user
-      const { data: { user }, error: authError } = await supabase.auth.signUp({
+      // Register the user
+      const { data, error: authError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
         options: {
-          data: {
-            username: form.username,
-            // Add any other user metadata here
-          }
-        }
+          data: { username: form.username },
+        },
       });
 
-      if (authError) throw authError;
+      const user = data?.user;
+      if (authError || !user) throw authError || new Error("Sign-up failed");
 
-      // 2. Create Razorpay order (only if registration succeeded)
-      const res = await fetch('/api/razorpay/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      // Create Razorpay order
+      const res = await fetch("/api/razorpay/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          courseId: "comm-course", // Your course ID
-          userId: user.id,         // From Supabase auth
-          amount: 18397           // ₹18,397 in paise
-        })
+          courseId: "comm-course",
+          userId: user.id,
+          email: form.email,
+          amount: 18397,
+        }),
       });
 
       const { orderId, error: orderError } = await res.json();
-      if (orderError) throw new Error(orderError);
+      if (orderError || !orderId) throw new Error(orderError || "Order failed");
 
-      // 3. Open Razorpay payment modal
+      // Launch Razorpay modal
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: 18397 * 100,
@@ -90,20 +78,19 @@ const BillingForm = () => {
         order_id: orderId,
         name: "Communication Course",
         description: "One-time payment",
-        handler: function(response) {
-          // Payment succeeded - webhook will handle the rest
+        handler: async function (response) {
+          console.log("✅ Razorpay payment response:", response);
           window.location.href = `/payment-success?payment_id=${response.razorpay_payment_id}`;
         },
         prefill: {
           name: form.username,
-          email: form.email
+          email: form.email,
         },
-        theme: { color: "#F37254" }
+        theme: { color: "#ffea00" },
       };
 
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (error) {
       alert(`Error: ${error.message}`);
       console.error(error);
@@ -116,10 +103,12 @@ const BillingForm = () => {
     >
       <h1 className="mb-12 font-bold text-3xl">Create an account</h1>
       <form
-        action={UserActivation}
+        onSubmit={(e) => {
+          e.preventDefault();
+          UserActivation();
+        }}
         className="flex flex-col items-center gap-4"
       >
-        {/* Username Field */}
         <label>
           <RevealOnScroll delay={0.2}>
             <input
@@ -133,8 +122,6 @@ const BillingForm = () => {
             />
           </RevealOnScroll>
         </label>
-
-        {/* Email Field */}
         <label>
           <RevealOnScroll delay={0.4}>
             <input
@@ -148,27 +135,29 @@ const BillingForm = () => {
             />
           </RevealOnScroll>
         </label>
-
-        {/* Password Field */}
         <label>
           <RevealOnScroll delay={0.6}>
             <div className="relative">
-
-            <input
-              className=" mb-4 p-2 w-[400px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30"
-              name="password"
-              type={passwordseen?"password":"text"}
-              value={form.password}
-              onChange={handleChange}
-              placeholder="Create a Password"
-              required
+              <input
+                className="mb-4 p-2 w-[400px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30"
+                name="password"
+                type={passwordseen ? "text" : "password"}
+                value={form.password}
+                onChange={handleChange}
+                placeholder="Create a Password"
+                required
               />
-            <Image onClick={()=>setpasswordseen(!passwordseen)} className="absolute cursor-pointer top-[10px] left-[370px]"  src={ passwordseen?"/svgs/eyes.svg":"/svgs/eyesnot.svg"} alt="eyes" width={20} height={20} />
-              </div>
+              <Image
+                onClick={() => setpasswordseen(!passwordseen)}
+                className="absolute cursor-pointer top-[10px] left-[370px]"
+                src={passwordseen ? "/svgs/eyes.svg" : "/svgs/eyesnot.svg"}
+                alt="eyes"
+                width={20}
+                height={20}
+              />
+            </div>
           </RevealOnScroll>
         </label>
-
-        {/* Password Requirements Error */}
         {showPasswordError && (
           <div className="w-[70%]">
             <p className="text-red-500 text-[15px]">
@@ -177,35 +166,34 @@ const BillingForm = () => {
             </p>
           </div>
         )}
-
-        {/* Confirm Password Field */}
         <label>
           <RevealOnScroll delay={0.6}>
             <div className="relative">
-
-            <input
-              className=" mb-4 p-2 w-[400px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30"
-              name="confirmPassword"
-              type={passwordseen2?"password":"text"}
-              value={form.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirm Password"
-              required
+              <input
+                className="mb-4 p-2 w-[400px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30"
+                name="confirmPassword"
+                type={passwordseen2 ? "text" : "password"}
+                value={form.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm Password"
+                required
               />
-            <Image onClick={()=>setpasswordseen2(!passwordseen2)} className="absolute cursor-pointer top-[10px] left-[370px]"  src={ passwordseen2?"/svgs/eyes.svg":"/svgs/eyesnot.svg"} alt="eyes" width={20} height={20} />
-              </div>
+              <Image
+                onClick={() => setpasswordseen2(!passwordseen2)}
+                className="absolute cursor-pointer top-[10px] left-[370px]"
+                src={passwordseen2 ? "/svgs/eyes.svg" : "/svgs/eyesnot.svg"}
+                alt="eyes"
+                width={20}
+                height={20}
+              />
+            </div>
           </RevealOnScroll>
         </label>
-
-        {/* Password Match Error */}
         {showConfirmPasswordError && (
           <p className="text-red-500">Passwords don't match</p>
         )}
-
-        {/* Checkout Button */}
         <RevealOnScroll delay={1.0}>
           <CheckoutButton
-            className=""
             course={{ id: 1, title: "Sample Course", price: 18397 }}
             disabled={
               isFormIncomplete || !passwordsMatch || !passwordMeetsRequirements

@@ -1,39 +1,87 @@
-import { NextResponse } from 'next/server';
-import Razorpay from 'razorpay';
-import { supabase } from '@/lib/supabase';
+import { NextResponse } from "next/server";
+import Razorpay from "razorpay";
+import crypto from "crypto";
+import { createClient } from "@supabase/supabase-js";
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET
-});
+// ✅ Use service role key for database writes
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+// ✅ Signature verification
+function verifySignature(body, signature, secret) {
+  const expectedSignature = crypto
+    .createHmac("sha256", secret)
+    .update(body)
+    .digest("hex");
+
+  return expectedSignature === signature;
+}
 
 export async function POST(req) {
-  const body = await req.text();
-  const signature = req.headers.get('x-razorpay-signature');
+  try {
+    const body = await req.text();
+    const signature = req.headers.get("x-razorpay-signature");
 
-  // 1. Verify webhook signature
-  const isValid = razorpay.utility.verifyWebhookSignature(
-    body,
-    signature,
-    process.env.RAZORPAY_WEBHOOK_SECRET
-  );
-  if (!isValid) return NextResponse.json({ error: 'Invalid signature' }, { status: 403 });
+    if (
+      !verifySignature(body, signature, process.env.RAZORPAY_WEBHOOK_SECRET)
+    ) {
+      console.warn("❌ Invalid Razorpay signature");
+      return NextResponse.json({ error: "Invalid signature" }, { status: 403 });
+    }
 
-  // 2. Handle payment event
-  const event = JSON.parse(body);
-  if (event.event === 'payment.captured') {
-    const { payment, order } = event.payload.payment.entity;
-    
-    // 3. Save to Supabase
-    const { error } = await supabase.from('purchases').insert({
-      user_id: order.notes.userId, // From create-order
-      course_id: order.notes.courseId,
-      razorpay_payment_id: payment.id,
-      amount: payment.amount / 100, // Convert paise to ₹
-    });
+    const event = JSON.parse(body);
+    console.log("📬 Event received:", event.event);
 
-    if (error) console.error('Supabase insert error:', error);
+    if (event.event === "payment.captured") {
+      console.log("💰 Payment captured event");
+      const payment = event.payload.payment.entity;
+      const { userId, courseId } = payment.notes || {};
+
+      if (!userId || !courseId) {
+        console.error("⚠️ Missing userId or courseId in payment notes");
+        return NextResponse.json(
+          { error: "Missing userId or courseId" },
+          { status: 400 }
+        );
+      }
+
+      // ✅ Prevent duplicate entries
+      const { data: existing } = await supabase
+        .from("purchases")
+        .select("id")
+        .eq("razorpay_payment_id", payment.id)
+        .maybeSingle();
+      if (existing) {
+        console.log("🔁 Duplicate payment, skipping insert");
+        return NextResponse.json({
+          success: true,
+          message: "Already processed",
+        });
+      }
+
+      // ✅ Insert purchase record
+      const { error: insertError } = await supabase.from("purchases").insert({
+        user_id: userId,
+        course_id: courseId,
+        razorpay_payment_id: payment.id,
+        amount: payment.amount, // store as integer (paise)
+        email: payment.email || null,
+      });
+
+      if (insertError) {
+        console.error("❌ Insert error:", insertError);
+        throw insertError;
+      }
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("❗ Webhook error:", error);
+    return NextResponse.json(
+      { error: "Processing failed", details: error.message },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json({ success: true });
 }
