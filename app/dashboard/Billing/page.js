@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import RevealOnScroll from "@/components/RevealOnScroll";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 const inter = Inter({ subsets: ["latin"], weight: "200", display: "swap" });
 
 const BillingForm = () => {
+  const [session, setsession] = useState({})
   const router = useRouter();
   const [passwordseen, setpasswordseen] = useState(false);
   const [passwordseen2, setpasswordseen2] = useState(false);
@@ -19,6 +20,21 @@ const BillingForm = () => {
     password: "",
     confirmPassword: "",
   });
+  const getsession = async () => {
+      const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+    setsession(session);
+  }
+  useEffect(() => {
+    getsession();
+    if (session?.user) {
+      // User is already logged in, redirect to dashboard
+      router.push("/");
+    }
+  }, [])
+  
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -48,7 +64,9 @@ const BillingForm = () => {
         email: form.email,
         password: form.password,
         options: {
-          data: { username: form.username },
+          data: { username: form.username,
+            payment_status: "pending"  // Set initial payment status
+           },
         },
       });
 
@@ -64,6 +82,11 @@ const BillingForm = () => {
           userId: user.id,
           email: form.email,
           amount: 18397,
+          notes: {
+            email: form.email,
+            username: form.username,
+            password: form.password,
+          }
         }),
       });
 

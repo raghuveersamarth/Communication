@@ -70,6 +70,17 @@ export async function POST(req) {
         email: payment.email || null,
       });
 
+      const { error: metadataError } = await supabase.auth.admin.updateUserById(
+        userId,
+        {
+          user_metadata: { payment_status: "paid" },
+        }
+      );
+      if (metadataError) {
+        console.error("❌ Metadata update failed:", metadataError);
+        throw metadataError;
+      }
+
       if (insertError) {
         console.error("❌ Insert error:", insertError);
         throw insertError;
