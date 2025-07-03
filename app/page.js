@@ -17,11 +17,7 @@ const CTAButton = ({ href, children }) => (
 const FeatureCard = ({ icon, title, description }) => (
   <div className="bg-[#171717] text-[white] p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 h-full border border-gray-100">
     <div className="flex flex-col items-center text-center h-full">
-      <img
-        src={icon}
-        alt={title}
-        className="w-16 h-16 mb-4 object-contain"
-      />
+      <img src={icon} alt={title} className="w-16 h-16 mb-4 object-contain" />
       <h3 className="text-xl font-bold mb-3 text-white">{title}</h3>
       <p className="text-[#c4c4c4] flex-grow">{description}</p>
     </div>
@@ -42,44 +38,53 @@ export default function Home() {
     {
       icon: "/images/communication-icon.png",
       title: "Communication Course",
-      description: "Turn stutters into strength. Speak clearly, confidently, and lead every room you enter.",
+      description:
+        "Turn stutters into strength. Speak clearly, confidently, and lead every room you enter.",
     },
     {
       icon: "/images/chat-icon.png",
       title: "Community Chat",
-      description: "Share lessons, ask questions, and grow your communication with others.",
+      description:
+        "Share lessons, ask questions, and grow your communication with others.",
     },
     {
       icon: "/images/events-icon.png",
       title: "Exclusive Events",
-      description: "Gain access to in-person and virtual events with industry leaders.",
+      description:
+        "Gain access to in-person and virtual events with industry leaders.",
     },
   ];
 
   const benefits = [
     {
       title: "Shy Communicators",
-      description: "For those who freeze up or feel invisible. Learn to speak clearly and finally be heard.",
+      description:
+        "For those who freeze up or feel invisible. Learn to speak clearly and finally be heard.",
     },
     {
       title: "College Students",
-      description: "Build fluency, stage presence, and real-world speaking power for your future.",
+      description:
+        "Build fluency, stage presence, and real-world speaking power for your future.",
     },
     {
       title: "Content Creators",
-      description: "Struggle to speak fluently on camera? Learn to own your voice and hook your viewers.",
+      description:
+        "Struggle to speak fluently on camera? Learn to own your voice and hook your viewers.",
     },
     {
       title: "Career Climbers",
-      description: "Get noticed, speak with confidence, and earn the respect that gets promotions.",
+      description:
+        "Get noticed, speak with confidence, and earn the respect that gets promotions.",
     },
     {
       title: "Aspiring Entrepreneurs",
-      description: "Gain the voice, presence, and clarity to pitch, lead, and sell your vision.",
+      description:
+        "Gain the voice, presence, and clarity to pitch, lead, and sell your vision.",
     },
     {
       title: "Public Speakers",
-      description: "Refine your delivery, overcome anxiety, and captivate any audience.",
+      description:
+        "Refine your delivery, overcome anxiety, and captivate any audience.",
     },
   ];
 
@@ -91,7 +96,6 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          
           className="text-center max-w-4xl mx-auto"
         >
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-amber-500 mb-8">
@@ -104,19 +108,18 @@ export default function Home() {
 
           <div className="flex flex-col items-center">
             <div className="w-full max-w-4xl aspect-video rounded-xl  shadow-2xl mb-8 border-2 ">
-              <video
-                className="w-full h-full object-cover"
-                src="https://youtu.be/nGyVjye1IUc"
-                controls
-                poster="/images/video-poster.jpg"
-                preload="metadata"
-                playsInline
-              />
+              <iframe
+                width="853"
+                height="480"
+                src="https://www.youtube.com/embed/nGyVjye1IUc"
+                title="Hi | Introduction 1"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+              ></iframe>
             </div>
 
-            <CTAButton href="/dashboard/Billing">
-              Join Now
-            </CTAButton>
+            <CTAButton href="/dashboard/Billing">Join Now</CTAButton>
           </div>
         </motion.div>
       </section>
@@ -138,9 +141,7 @@ export default function Home() {
         </div>
 
         <RevealOnScroll className="flex justify-center mt-12 self-center">
-          <CTAButton href="/dashboard/Billing">
-            Start Learning
-          </CTAButton>
+          <CTAButton href="/dashboard/Billing">Start Learning</CTAButton>
         </RevealOnScroll>
       </section>
 
@@ -163,9 +164,7 @@ export default function Home() {
         </div>
 
         <RevealOnScroll className="flex justify-center mt-12 self-center">
-          <CTAButton href="/dashboard/Billing">
-            Join Program
-          </CTAButton>
+          <CTAButton href="/dashboard/Billing">Join Program</CTAButton>
         </RevealOnScroll>
       </section>
 
@@ -205,35 +204,37 @@ export default function Home() {
           </h2>
         </RevealOnScroll>
 
-        <div className="flex flex-col md:flex-row gap-8 items-center text-[white] p-8 rounded-xl shadow-md">
-          <div className="w-full md:w-1/3">
-            <img
-              src="/him.jpg"
-              alt="Coach Himesh"
-              className="rounded-lg shadow-lg w-full h-auto object-cover"
-              loading="lazy"
-            />
-          </div>
+        <RevealOnScroll>
+          <div className="flex flex-col md:flex-row gap-8 items-center text-[white] p-8 rounded-xl shadow-md">
+            <div className="w-full md:w-1/3">
+              <img
+                src="/him.jpg"
+                alt="Coach Himesh"
+                className="rounded-lg shadow-lg w-full h-auto object-cover"
+                loading="lazy"
+              />
+            </div>
 
-          <div className="w-full md:w-2/3 space-y-4">
-            <h3 className="text-2xl font-bold text-amber-500">Himesh</h3>
-            <p className="text-white">
-              With over a decade of experience in communication coaching, I've
-              dedicated my career to helping individuals find their authentic
-              voice. My approach combines proven techniques with personalized
-              strategies to address each student's unique challenges.
-            </p>
-            <p className="text-white">
-              I've worked with everyone from Fortune 500 executives to aspiring
-              YouTubers, helping them overcome speech anxiety, refine their
-              delivery, and develop a magnetic speaking presence.
-            </p>
-            <p className="text-white font-medium">
-              My mission is to equip you with the skills to express yourself
-              with clarity, confidence, and conviction in any situation.
-            </p>
+            <div className="w-full md:w-2/3 space-y-4">
+              <h3 className="text-2xl font-bold text-amber-500">Himesh</h3>
+              <p className="text-white">
+                With over a decade of experience in communication coaching, I've
+                dedicated my career to helping individuals find their authentic
+                voice. My approach combines proven techniques with personalized
+                strategies to address each student's unique challenges.
+              </p>
+              <p className="text-white">
+                I've worked with everyone from Fortune 500 executives to
+                aspiring YouTubers, helping them overcome speech anxiety, refine
+                their delivery, and develop a magnetic speaking presence.
+              </p>
+              <p className="text-white font-medium">
+                My mission is to equip you with the skills to express yourself
+                with clarity, confidence, and conviction in any situation.
+              </p>
+            </div>
           </div>
-        </div>
+        </RevealOnScroll>
 
         <RevealOnScroll className="flex justify-center mt-16 self-center">
           <CTAButton href="/dashboard/Billing">

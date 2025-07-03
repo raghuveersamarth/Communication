@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 const inter = Inter({ subsets: ["latin"], weight: "200", display: "swap" });
 
 const BillingForm = () => {
-  const [session, setsession] = useState({})
+  const [session, setsession] = useState({});
   const router = useRouter();
   const [passwordseen, setpasswordseen] = useState(false);
   const [passwordseen2, setpasswordseen2] = useState(false);
@@ -21,20 +21,19 @@ const BillingForm = () => {
     confirmPassword: "",
   });
   const getsession = async () => {
-      const {
+    const {
       data: { session },
       error,
     } = await supabase.auth.getSession();
     setsession(session);
-  }
+  };
   useEffect(() => {
     getsession();
     if (session?.user) {
       // User is already logged in, redirect to dashboard
       router.push("/");
     }
-  }, [])
-  
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -48,7 +47,17 @@ const BillingForm = () => {
       /\d/.test(password)
     );
   };
-
+  const handleExistingUser = async () => {
+    try {
+      // Try to sign in the existing user
+      const { error } = await supabase.auth.signInWithPassword({
+        email: form.email,
+        password: form.password,
+      });
+    } catch (error) {
+      console.error("Error handling existing user:", error);
+    }
+  };
   const isFormIncomplete =
     !form.username || !form.email || !form.password || !form.confirmPassword;
 
@@ -57,66 +66,78 @@ const BillingForm = () => {
   const showPasswordError = form.password && !passwordMeetsRequirements;
   const showConfirmPasswordError = form.confirmPassword && !passwordsMatch;
 
-  const UserActivation = async (e) => {
-    try {
-      // Register the user
-      const { data, error: authError } = await supabase.auth.signUp({
-        email: form.email,
-        password: form.password,
-        options: {
-          data: { username: form.username,
-            payment_status: "pending"  // Set initial payment status
-           },
-        },
-      });
-
-      const user = data?.user;
-      if (authError || !user) throw authError || new Error("Sign-up failed");
-
-      // Create Razorpay order
-      const res = await fetch("/api/razorpay/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          courseId: "comm-course",
-          userId: user.id,
+  const UserActivation = async () => {
+    const Checkres = await fetch("/api/Checkuser", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+    const result = await Checkres.json();
+    if (!result.exists) {
+      try {
+        // Register the user
+        const { data, error: authError } = await supabase.auth.signUp({
           email: form.email,
-          amount: 18397,
-          notes: {
+          password: form.password,
+          options: {
+            data: {
+              username: form.username,
+              payment_status: "pending", // Set initial payment status
+            },
+          },
+        });
+
+        const user = data?.user;
+        if (authError || !user) throw authError || new Error("Sign-up failed");
+
+        // Create Razorpay order
+        const res = await fetch("/api/razorpay/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            courseId: "comm-course",
+            userId: user.id,
             email: form.email,
-            username: form.username,
-            password: form.password,
-          }
-        }),
-      });
+            amount: 18397,
+            notes: {
+              email: form.email,
+              username: form.username,
+              password: form.password,
+            },
+          }),
+        });
 
-      const { orderId, error: orderError } = await res.json();
-      if (orderError || !orderId) throw new Error(orderError || "Order failed");
+        const { orderId, error: orderError } = await res.json();
+        if (orderError || !orderId)
+          throw new Error(orderError || "Order failed");
 
-      // Launch Razorpay modal
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: 18397 * 100,
-        currency: "INR",
-        order_id: orderId,
-        name: "Communication Course",
-        description: "One-time payment",
-        handler: async function (response) {
-          console.log("✅ Razorpay payment response:", response);
-          window.location.href = `/payment-success?payment_id=${response.razorpay_payment_id}`;
-        },
-        prefill: {
-          name: form.username,
-          email: form.email,
-        },
-        theme: { color: "#ffea00" },
-      };
+        // Launch Razorpay modal
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          amount: 18397 * 100,
+          currency: "INR",
+          order_id: orderId,
+          name: "Communication Course",
+          description: "One-time payment",
+          handler: async function (response) {
 
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } catch (error) {
-      alert(`Error: ${error.message}`);
-      console.error(error);
+            window.location.href = `/payment-success?payment_id=${response.razorpay_payment_id}`;
+          },
+          prefill: {
+            name: form.username,
+            email: form.email,
+          },
+          theme: { color: "#e49e12" },
+        };
+
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+      } catch (error) {
+        alert(`Error: ${error.message}`);
+        console.error(error);
+      }
+    } else {
+      alert("User already exists");
     }
   };
 
@@ -216,12 +237,14 @@ const BillingForm = () => {
           <p className="text-red-500">Passwords don't match</p>
         )}
         <RevealOnScroll delay={1.0}>
-          <CheckoutButton
-            course={{ id: 1, title: "Sample Course", price: 18397 }}
+          <button
+            className="border text-center border-amber-500 text-white px-8 py-2 rounded-lg hover:bg-amber-600 cursor-pointer transition-colors font-medium disabled:bg-gray-400 disabled:border-none"
             disabled={
               isFormIncomplete || !passwordsMatch || !passwordMeetsRequirements
             }
-          />
+          >
+            pay 18397
+          </button>
         </RevealOnScroll>
       </form>
     </div>

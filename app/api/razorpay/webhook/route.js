@@ -73,7 +73,7 @@ export async function POST(req) {
       const { error: metadataError } = await supabase.auth.admin.updateUserById(
         userId,
         {
-          user_metadata: { payment_status: "paid" },
+          user_metadata: { payment_status: "completed" },
         }
       );
       if (metadataError) {
@@ -84,6 +84,16 @@ export async function POST(req) {
       if (insertError) {
         console.error("❌ Insert error:", insertError);
         throw insertError;
+      }
+      const { data: updateData, error: updateError } =
+        await supabase.auth.admin.updateUserById(userId, {
+          user_metadata: { payment_status: "completed" },
+        });
+
+      if (updateError) {
+        console.error("❌ Failed to update user metadata:", updateError);
+      } else {
+        console.log("✅ User metadata updated:", updateData);
       }
     }
 

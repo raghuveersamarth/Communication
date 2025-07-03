@@ -14,15 +14,27 @@ export default function PaymentSuccessPage() {
   const router = useRouter();
 
   const getsession = async () => {
+    await supabase.auth.refreshSession();
+
     const {
       data: { session },
       error,
     } = await supabase.auth.getSession();
+
+    // If no session, redirect to Plan
     if (!session) {
       console.log("No active session found");
       router.push("/dashboard/Plan");
+      return;
     }
-    console.log(session)
+
+    // If payment_status is not 'paid' or 'completed', redirect to billing
+    const paymentStatus = session.user?.user_metadata?.payment_status;
+    if (paymentStatus !== "paid" && paymentStatus !== "completed") {
+      router.push("/dashboard/Billing");
+      return;
+    }
+
     setsession(session);
   };
 
@@ -31,7 +43,9 @@ export default function PaymentSuccessPage() {
   }, []);
 
   return (
-    <div className={`${inter.className} gap-4 min-h-screen flex flex-col justify-center items-center text-white p-6`}>
+    <div
+      className={`${inter.className} gap-4 min-h-screen flex flex-col justify-center items-center text-white p-6`}
+    >
       <RevealOnScroll delay={0.2}>
         <h1 className="text-4xl font-extrabold text-center text-amber-400">
           🎉 Payment Successful!
