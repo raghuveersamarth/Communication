@@ -1,59 +1,50 @@
-import Razorpay from 'razorpay';
-import { NextResponse } from 'next/server';
+import Razorpay from "razorpay";
+import { NextResponse } from "next/server";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 export async function POST(req) {
   try {
-    const { courseId, userId, amount } = await req.json();
+    const { courseId, amount, email, username, password } = await req.json();
 
     // Validate input
-    if (!courseId || !userId || !amount) {
+    if (!courseId || !amount || !email || !username || !password) {
       return NextResponse.json(
-        { error: 'Missing courseId, userId, or amount' },
+        { error: "Missing required fields (courseId, amount, email, username)" },
         { status: 400 }
       );
-    }
-    else if (typeof amount !== 'number' || amount <= 0) {
-      return NextResponse.json(
-        { error: 'Invalid amount' },
-        { status: 400 }
-      );
+    } else if (typeof amount !== "number" || amount <= 0) {
+      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
-    // Convert IDs to strings to ensure slice() works
-    const courseStr = String(courseId);
-    const userStr = String(userId);
+    // Generate a temporary password (do NOT send raw passwords)
+    const tempPassword = Math.random().toString(36).slice(-8);
 
-    // Generate receipt ID (max 40 chars)
-    const receiptId = `crse-${courseStr.slice(0, 5)}-usr-${userStr.slice(0, 8)}-${Date.now().toString().slice(-6)}`;
-
+    const receiptId = `${courseId}-${Date.now()}`;
     const order = await razorpay.orders.create({
       amount: amount * 100, // Convert to paise
-      currency: 'INR',
+      currency: "INR",
       receipt: receiptId,
-      notes: { 
-        courseId: courseStr,
-        userId: userStr
+      notes: {
+        courseId: String(courseId),
+        email: email,
+        password: password, // Use temp password
+        username: username,
+        receipt: receiptId,
       },
-      payment_capture: 1
+      payment_capture: 1,
     });
 
     return NextResponse.json({
       orderId: order.id,
     });
-
   } catch (error) {
-    console.error('Razorpay error:', error);
-    
-    // Improved error handling
-    const errorMessage = error.error?.description 
-      || error.message 
-      || 'Payment processing failed';
-
+    console.error("Razorpay error:", error);
+    const errorMessage =
+      error.error?.description || error.message || "Payment processing failed";
     return NextResponse.json(
       { error: errorMessage },
       { status: error.statusCode || 500 }
