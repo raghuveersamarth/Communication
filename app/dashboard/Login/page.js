@@ -1,14 +1,32 @@
 "use client";
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { Montserrat } from "next/font/google";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/app/lib/supabase";
 
 const inter = Montserrat({
   subsets: ["latin"],
   weight: ["200", "400", "500", "600", "700"],
 });
 const Login = () => {
+  const router = useRouter()
+  const [form, setform] = useState({"email":"","password":""})
+  const [session, setsession] = useState({})
+  const handlelogin = async()=>{
+    const {data:{session}, error} = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password:form.password
+    })
+    if (error) {
+      alert("error logging in")
+    }
+    else{
+      setsession(session);
+      router.push("/")
+    }
+  }
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -28,13 +46,15 @@ const Login = () => {
         <h1 className="text-4xl font-bold text-[#fca000] mb-8">
           Welcome back!
         </h1>
-        <form className="bg-[#191919] p-8 rounded-lg shadow-md w-96">
+        <form className="bg-[#191919] p-8 rounded-lg shadow-md w-96" onSubmit={handlelogin}>
           <div className="mb-4">
             <label className="block text-white mb-2" htmlFor="email">
               Email
             </label>
             <input
               type="email"
+              name="email"
+              onChange={(e)=>setform({...form,[e.target.name]:e.target.value})}
               id="email"
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               required
@@ -46,13 +66,14 @@ const Login = () => {
             </label>
             <input
               type="password"
+              name="password"
+              onChange={(e)=>setform({...form,[e.target.name]:e.target.value})}
               id="password"
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               required
             />
           </div>
           <button
-            type="submit"
             className="w-full bg-[#fca000] cursor-pointer text-white py-2 rounded hover:bg-[#ffc67b] transition duration-200"
           >
             Login
@@ -71,7 +92,7 @@ const Login = () => {
           <p className="text-center text-white mt-4">
             Don't have an account?
             <a
-              href="/dashboard/Billing"
+              href="/dashboard/Plan"
               className="text-[#fca000] hover:underline"
             >
               Sign Up

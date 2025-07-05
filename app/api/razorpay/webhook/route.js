@@ -114,13 +114,6 @@ export async function POST(req) {
           }
         });
 
-      // 3. Return the magic link (store in DB or send via email)
-      await supabase
-        .from("pending_logins")
-        .upsert({
-          payment_id: payment.id,
-          magic_link: link.properties.action_link
-        });
 
     console.log("✅ Payment recorded for user:", userId);
     return NextResponse.json({ success: true });

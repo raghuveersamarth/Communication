@@ -130,6 +130,10 @@ const BillingForm = () => {
           },
         },
       };
+      const setitem = localStorage.setItem("user token",JSON.stringify({
+        "email": form.email,
+        "password": form.password
+      }))
 
       const rzp = new window.Razorpay(options);
       rzp.open();
