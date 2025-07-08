@@ -14,13 +14,14 @@ const Login = () => {
   const router = useRouter()
   const [form, setform] = useState({"email":"","password":""})
   const [session, setsession] = useState({})
+  const [error, seterror] = useState(false);
   const handlelogin = async()=>{
     const {data:{session}, error} = await supabase.auth.signInWithPassword({
       email: form.email,
       password:form.password
     })
     if (error) {
-      alert("error logging in")
+      seterror(true)
     }
     else{
       setsession(session);
@@ -46,7 +47,13 @@ const Login = () => {
         <h1 className="text-4xl font-bold text-[#fca000] mb-8">
           Welcome back!
         </h1>
-        <form className="bg-[#191919] p-8 rounded-lg shadow-md w-96" onSubmit={handlelogin}>
+        <form
+          className="bg-[#191919] p-8 rounded-lg shadow-md w-96"
+          onSubmit={e => {
+            e.preventDefault();
+            handlelogin();
+          }}
+        >
           <div className="mb-4">
             <label className="block text-white mb-2" htmlFor="email">
               Email
@@ -54,7 +61,7 @@ const Login = () => {
             <input
               type="email"
               name="email"
-              onChange={(e)=>setform({...form,[e.target.name]:e.target.value})}
+              onChange={e => setform({ ...form, [e.target.name]: e.target.value })}
               id="email"
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               required
@@ -67,14 +74,20 @@ const Login = () => {
             <input
               type="password"
               name="password"
-              onChange={(e)=>setform({...form,[e.target.name]:e.target.value})}
+              onChange={e => setform({ ...form, [e.target.name]: e.target.value })}
               id="password"
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
               required
             />
           </div>
+          {error && (
+            <p className="text-red-500 text-sm mb-4"> 
+            Invalid email or password. Please try again.
+          </p>
+          )}
           <button
             className="w-full bg-[#fca000] cursor-pointer text-white py-2 rounded hover:bg-[#ffc67b] transition duration-200"
+            type="submit"
           >
             Login
           </button>

@@ -23,24 +23,6 @@ return (
             </div>
             <div className="socials flex flex-col gap-3">
                 <div className="flex gap-3 items-center">
-                    <img src="svgs/facebook.svg" className="h-8"  alt="" />
-                    <a
-                        href="https://www.facebook.com"
-                        className="text-[#fca000] hover:text-gray-300"
-                    >
-                        Facebook
-                    </a>
-                </div>
-                <div className="flex gap-3 items-center">
-                    <img src="svgs/twitter.svg" className="h-8" alt="" />
-                    <a
-                        href="https://www.twitter.com"
-                        className="text-[#fca000] hover:text-gray-300"
-                    >
-                        Twitter
-                    </a>
-                </div>
-                <div className="flex gap-3 items-center">
                     <div
                         className="relative"
                         style={{ display: "inline-block" }}

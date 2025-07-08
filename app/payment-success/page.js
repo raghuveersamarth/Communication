@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/app/lib/supabase";
 import RevealOnScroll from "@/components/RevealOnScroll";
 import { Inter } from "next/font/google";
@@ -11,50 +10,51 @@ const inter = Inter({ subsets: ["latin"], weight: "200", display: "swap" });
 export default function PaymentSuccessPage() {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState("User");
   const router = useRouter();
-  const params = useSearchParams();
 
-  // Handle session verification and redirection
   const verifySession = async () => {
     setLoading(true);
+    try {
+      // Refresh session
+      await supabase.auth.refreshSession();
+      
+      // Get current session
+      const { data: { session: currentSession }, error } = await supabase.auth.getSession();
 
-    // Refresh the session
-    await supabase.auth.refreshSession();
+      if (error || !currentSession) {
+        const stored = typeof window !== 'undefined' ? localStorage.getItem("user token") : null;
+        
+        if (stored) {
+          const { email, password, username: storedUsername } = JSON.parse(stored);
+          setUsername(storedUsername || "User");
 
-    // Get current session
-    let {
-      data: { session },
-      error,
-    } = await supabase.auth.getSession();
+          const { error: loginError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
 
-    if (error || !session) {
-      console.log("No active session found, trying localStorage...");
+          if (loginError) {
+            console.error("Login failed:", loginError.message);
+            router.push("/dashboard/Plan");
+            return;
+          }
 
-      const stored = localStorage.getItem("user token");
-      if (stored) {
-        const { email, password } = JSON.parse(stored);
-
-        const {
-          data: { session: loginSession },
-          error: loginError,
-        } = await supabase.auth.signInWithPassword({
-          email: email,
-          password: password,
-        });
-
-        if (loginError) {
-          console.error("❌ Login failed:", loginError.message);
-        } else {
-          const session = loginSession; // <-- use the one we just got
-          console.log("✅ Logged in:", session);
           localStorage.removeItem("user token");
+        } else {
+          router.push("/dashboard/Plan");
+          return;
         }
+      } else {
+        setSession(currentSession);
+        setUsername(currentSession?.user?.user_metadata?.username || "User");
       }
+    } catch (err) {
+      console.error("Session verification failed:", err);
+      router.push("/Plan");
+    } finally {
+      setLoading(false);
     }
-
-    setSession(session);
-    console.log(session)
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -63,21 +63,15 @@ export default function PaymentSuccessPage() {
 
   if (loading) {
     return (
-      <div
-        className={`${inter.className} min-h-screen flex flex-col justify-center items-center`}
-      >
+      <div className={`${inter.className} min-h-screen flex flex-col justify-center items-center`}>
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
-        <p className="mt-4 text-gray-300">
-          Verifying your payment... and Signing in
-        </p>
+        <p className="mt-4 text-gray-300">Verifying your payment... and Signing in</p>
       </div>
     );
   }
 
   return (
-    <div
-      className={`${inter.className} gap-4 min-h-screen flex flex-col justify-center items-center text-white p-6`}
-    >
+    <div className={`${inter.className} gap-4 min-h-screen flex flex-col justify-center items-center text-white p-6`}>
       <RevealOnScroll delay={0.2}>
         <h1 className="text-4xl font-extrabold text-center text-amber-400">
           🎉 Payment Successful!
@@ -87,9 +81,7 @@ export default function PaymentSuccessPage() {
       <RevealOnScroll delay={0.4}>
         <p className="text-lg text-center mt-4 text-gray-300 max-w-md">
           Thank you for your payment,{" "}
-          <span className="text-white font-semibold">
-            {session?.user?.user_metadata?.username || "User"}
-          </span>
+          <span className="text-white font-semibold">{username}</span>
           . Your access to the course has been granted.
         </p>
       </RevealOnScroll>

@@ -1,4 +1,3 @@
-// components/LogoutButton.js
 "use client";
 
 import { useState } from "react";
@@ -9,23 +8,34 @@ import { useRouter } from "next/navigation";
 export default function LogoutButton() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [error, setError] = useState(null);
   const router = useRouter();
   const supabase = createClientComponentClient();
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
+    setError(null);
+    
     try {
-      const { error } = await supabase.auth.signOut();
-      if (!error) {
-        router.push("/dashboard/Login");
-        console.log("Logout successful");
-        router.refresh();
+      const { error: logoutError } = await supabase.auth.signOut();
+      
+      if (logoutError) {
+        setError(logoutError.message);
+        return;
       }
+      
+      console.log("Logout successful");
+      router.push("/dashboard/Login");
+      router.refresh();
     } catch (error) {
       console.error("Logout error:", error);
+      setError(error.message);
     } finally {
-      setShowConfirm(false);
       setIsLoggingOut(false);
+      // Only hide the dialog if logout was successful
+      if (!error) {
+        setShowConfirm(false);
+      }
     }
   };
 
@@ -74,12 +84,20 @@ export default function LogoutButton() {
                 Are you sure you want to sign out?
               </p>
 
+              {error && (
+                <p className="text-red-500 mb-4">{error}</p>
+              )}
+
               <div className="flex justify-end space-x-3">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowConfirm(false)}
+                  onClick={() => {
+                    setShowConfirm(false);
+                    setError(null);
+                  }}
                   className="bg-gray-200 text-gray-800 rounded-lg py-2 px-4 hover:bg-gray-300 transition-colors duration-300"
+                  disabled={isLoggingOut}
                 >
                   Cancel
                 </motion.button>
@@ -90,10 +108,7 @@ export default function LogoutButton() {
                   className="bg-[#fca000] text-white rounded-lg py-2 px-4 hover:bg-[#f9c388] transition-colors duration-300 disabled:opacity-70"
                   disabled={isLoggingOut}
                 >
-                  <span className="flex items-center justify-center">
-                    <motion.span />
-                    Sign Out
-                  </span>
+                  {isLoggingOut ? "Signing Out..." : "Sign Out"}
                 </motion.button>
               </div>
             </motion.div>

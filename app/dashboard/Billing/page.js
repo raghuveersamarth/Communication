@@ -132,6 +132,7 @@ const BillingForm = () => {
       };
       const setitem = localStorage.setItem("user token",JSON.stringify({
         "email": form.email,
+        "username": form.username,
         "password": form.password
       }))
 
