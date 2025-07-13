@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { supabase } from "@/app/lib/supabase";
 import { Poppins } from "next/font/google";
 
 const inter = Poppins({ subsets: ["latin"], weight: "200", display: "swap" });
@@ -20,56 +21,45 @@ const Videos = () => {
     "BOUNUS : Vocabulary Mastery"
   ];
 
-  // Replace these with real video data later
-  const videoData = {
-    0: [
-      { title: "Intro Video", thumbnail: "/him.jpg", duration: "5:12" },
-      {
-        title: "Why Communication Matters",
-        thumbnail: "/him.jpg",
-        duration: "8:30",
-      },
-    ],
-    1: [
-      { title: "Building Confidence", thumbnail: "/him.jpg", duration: "7:45" },
-      { title: "Effective Speaking", thumbnail: "/him.jpg", duration: "6:20" },
-    ],
-    2: [
-      { title: "Building Confidence", thumbnail: "/him.jpg", duration: "7:45" },
-      { title: "Effective Speaking", thumbnail: "/him.jpg", duration: "6:20" },
-    ],
-    3: [
-      { title: "Building Confidence", thumbnail: "/him.jpg", duration: "7:45" },
-      { title: "Effective Speaking", thumbnail: "/him.jpg", duration: "6:20" },
-    ],
-    4: [
-      { title: "Building Confidence", thumbnail: "/him.jpg", duration: "7:45" },
-      { title: "Effective Speaking", thumbnail: "/him.jpg", duration: "6:20" },
-      { title: "Effective Speaking", thumbnail: "/him.jpg", duration: "3:20" },
-      { title: "Effective Speaking", thumbnail: "/him.jpg", duration: "4:20" },
-    ],
-    5: [
-      { title: "Building Confidence", thumbnail: "/him.jpg", duration: "7:45" },
-      { title: "Effective Speaking", thumbnail: "/him.jpg", duration: "6:20" },
-    ],
-    // Add more...
-  };
-
   const [selectedModule, setSelectedModule] = useState(null);
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      if (selectedModule === null) return;
+
+      setLoading(true);
+      setVideos([]);
+      setSelectedVideo(null); // reset video on module change
+
+      const { data, error } = await supabase
+        .from("communication_videos_by_modules")
+        .select("title, youtube_id, thumbnail_url")
+        .eq("module_id", selectedModule+1);
+
+        console.log(data)
+
+      if (error) {
+        console.error("Error fetching videos:", error.message);
+      } else {
+        setVideos(data);
+
+      }
+
+      setLoading(false);
+    };
+
+    fetchVideos();
+  }, [selectedModule]);
 
   return (
     <section className={`flex w-full h-screen ${inter.className}`}>
       {/* Sidebar */}
-      <aside className="flex flex-col w-[25%] bg-[#171616] p-6 shadow-lg">
-        <h2 className="text-2xl font-bold mb-6 text-amber-400">
-          Choose a Module
-        </h2>
-        <ul
-          className="overflow-y-auto h-[80%] space-y-3"
-          style={{
-            scrollbarWidth: "none",
-          }}
-        >
+      <aside className="flex flex-col w-[25%] bg-[#171616] p-6 shadow-lg overflow-y-auto">
+        <h2 className="text-2xl font-bold mb-6 text-amber-400">Choose a Module</h2>
+        <ul className="space-y-3">
           {modules.map((module, idx) => (
             <li
               key={idx}
@@ -78,38 +68,65 @@ const Videos = () => {
               }`}
               onClick={() => setSelectedModule(idx)}
             >
-              {(idx===11)?`${module}`:`Module ${idx + 1}: ${module}`}
+              {`Module ${idx + 1}: ${module}`}
             </li>
           ))}
         </ul>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-10 overflow-y-auto bg-[#0f0f0f]">
+      <main className="flex-1 p-8 overflow-y-auto bg-[#0f0f0f]">
         {selectedModule === null ? (
           <div className="text-2xl text-center text-gray-400 mt-20">
             Select a module to view its videos.
           </div>
+        ) : loading ? (
+          <div className="text-center text-amber-400 text-xl mt-20">Loading...</div>
+        ) : selectedVideo ? (
+          // FULL VIDEO PLAYER VIEW
+          <div className="flex flex-col items-start gap-4">
+            <button
+              className="mb-4 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+              onClick={() => setSelectedVideo(null)}
+            >
+              ← Back to all videos
+            </button>
+            <div className="w-full aspect-video">
+              <iframe
+                className="w-full h-full rounded-lg"
+                src={`https://www.youtube.com/embed/${selectedVideo.youtube_id}?autoplay=1`}
+                title={selectedVideo.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <h1 className="text-2xl text-white font-bold mt-4">{selectedVideo.title}</h1>
+          </div>
         ) : (
-          <div>
+          // GRID OF VIDEO CARDS
+          <>
             <h3 className="text-3xl font-bold mb-6 text-amber-400">
               Videos in Module {selectedModule + 1}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-              {videoData[selectedModule]?.map((video, i) => (
+              {videos.map((video, i) => (
                 <div
                   key={i}
+                  onClick={() => setSelectedVideo(video)}
                   className="bg-[#1e1e1e] rounded-lg overflow-hidden shadow hover:scale-[1.02] transition transform cursor-pointer"
-                  
                 >
                   <div className="relative">
                     <img
-                      src={video.thumbnail}
+                      src={
+                        video.thumbnail_url ||
+                        `https://img.youtube.com/vi/${video.youtube_id}/0.jpg`
+                      }
                       alt={video.title}
                       className="w-full h-48 object-cover"
                     />
                     <span className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
-                      {video.duration}
+                      ▶
                     </span>
                   </div>
                   <div className="p-3 text-white">
@@ -118,7 +135,7 @@ const Videos = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </>
         )}
       </main>
     </section>
