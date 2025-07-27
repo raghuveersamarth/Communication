@@ -35,9 +35,9 @@ export async function POST(req) {
     }
 
     const payment = event.payload.payment.entity;
-    const { username, courseId, email, password } = payment.notes || {};
+    const { username, courseId, email, password, phone } = payment.notes || {};
 
-    if (!courseId || !email || !username || !password) {
+    if (!courseId || !email || !username || !password || !phone) {
       console.error("❌ Missing required fields in notes");
       return NextResponse.json(
         { error: "Missing required fields in notes" },
@@ -45,7 +45,7 @@ export async function POST(req) {
       );
     }
 
-    console.log("Extracted notes:", { username, courseId, email });
+    // console.log("Extracted notes:", { username, courseId, email });
 
     // ✅ Check for duplicate payment first
     const { data: existing } = await supabase
@@ -61,11 +61,12 @@ export async function POST(req) {
         message: "Already processed",
       });
     }
-
+     
     // ✅ Create user
     const { data: userData, error: userError } = await supabase.auth.admin.createUser({
       email: email,
       password: password,
+      phone: phone,
       user_metadata: {
         payment_status: "pending",
         username: username,
@@ -104,15 +105,6 @@ export async function POST(req) {
       console.error("❌ Metadata update failed:", updateError);
       throw updateError;
     }
-          // 2. Generate magic link
-      const { data: link, error: linkError } = 
-        await supabase.auth.admin.generateLink({
-          type: "magiclink",
-          email: email,
-          options: {
-            redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/payment-success`
-          }
-        });
 
 
     console.log("✅ Payment recorded for user:", userId);

@@ -15,6 +15,16 @@ const Login = () => {
   const [form, setform] = useState({"email":"","password":""})
   const [session, setsession] = useState({})
   const [error, seterror] = useState(false);
+    // Check for existing session
+    useEffect(() => {
+      const checkSession = async () => {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (session?.user) router.push("/");
+      };
+      checkSession();
+    }, [router]);
   const handlelogin = async()=>{
     const {data:{session}, error} = await supabase.auth.signInWithPassword({
       email: form.email,
@@ -96,7 +106,7 @@ const Login = () => {
           <p className="text-center text-white mt-4">
             Forgot your password?{" "}
             <a
-              href="/reset-password"
+              href="/auth/forgot-password"
               className="text-[#fca000] hover:underline"
             >
               Reset it

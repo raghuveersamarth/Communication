@@ -8,10 +8,10 @@ const razorpay = new Razorpay({
 
 export async function POST(req) {
   try {
-    const { courseId, amount, email, username, password } = await req.json();
-
+    const { courseId, amount, email, username, password, phone } = await req.json();
+    
     // Validate input
-    if (!courseId || !amount || !email || !username || !password) {
+    if (!courseId || !amount || !email || !username || !password || !phone) {
       return NextResponse.json(
         { error: "Missing required fields (courseId, amount, email, username)" },
         { status: 400 }
@@ -19,9 +19,7 @@ export async function POST(req) {
     } else if (typeof amount !== "number" || amount <= 0) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
-
-    // Generate a temporary password (do NOT send raw passwords)
-    const tempPassword = Math.random().toString(36).slice(-8);
+    console.log(`Creating order for courseId: ${courseId}, amount: ${amount}, email: ${email}, username: ${username}`);
 
     const receiptId = `${courseId}-${Date.now()}`;
     const order = await razorpay.orders.create({
@@ -32,6 +30,7 @@ export async function POST(req) {
         courseId: String(courseId),
         email: email,
         password: password, // Use temp password
+        phone: phone,
         username: username,
         receipt: receiptId,
       },

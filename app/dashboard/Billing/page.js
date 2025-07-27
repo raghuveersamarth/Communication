@@ -6,6 +6,8 @@ import RevealOnScroll from "@/components/RevealOnScroll";
 import { supabase } from "@/app/lib/supabase";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const inter = Inter({ subsets: ["latin"], weight: "200", display: "swap" });
 
@@ -16,11 +18,11 @@ const BillingForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     username: "",
+    phone: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-
   // Check for existing session
   useEffect(() => {
     const checkSession = async () => {
@@ -31,7 +33,10 @@ const BillingForm = () => {
     };
     checkSession();
   }, [router]);
-
+  
+  const handlePhoneChange = (value) => {
+  handleChange({ target: { name: 'phone', value } });
+};
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -70,12 +75,13 @@ const BillingForm = () => {
         body: JSON.stringify({
           email: form.email,
           username: form.username,
+          phone: form.phone,
         }),
       });
 
       const { exists } = await checkRes.json();
       if (exists) {
-        alert("User with this email already exists");
+        alert("User with this email or phone number already exists");
         return;
       }
 
@@ -88,6 +94,7 @@ const BillingForm = () => {
           amount: 18397,
           email: form.email,
           username: form.username,
+          phone: form.phone,
           password: form.password,
         }),
       });
@@ -108,6 +115,7 @@ const BillingForm = () => {
         notes: {
           courseId: "comm-course",
           email: form.email,
+          phone: form.phone,
           username: form.username,
         },
         handler: (response) => {
@@ -118,7 +126,7 @@ const BillingForm = () => {
         prefill: {
           name: form.username,
           email: form.email,
-          contact: "", // Add if you collect phone numbers
+          contact: form.phone, // Add if you collect phone numbers
         },
         theme: {
           color: "#e49e12",
@@ -130,12 +138,15 @@ const BillingForm = () => {
           },
         },
       };
-      const setitem = localStorage.setItem("user token",JSON.stringify({
-        "email": form.email,
-        "username": form.username,
-        "password": form.password
-      }))
-
+      const setitem = localStorage.setItem(
+        "user token",
+        JSON.stringify({
+          email: form.email,
+          username: form.username,
+          password: form.password,
+          phone: form.phone,
+        })
+      );
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
@@ -144,6 +155,7 @@ const BillingForm = () => {
     } finally {
       setIsLoading(false);
     }
+    // console.log("Payment button clicked", form);
   };
 
   return (
@@ -176,9 +188,35 @@ const BillingForm = () => {
               minLength={3}
             />
           </RevealOnScroll>
+          <RevealOnScroll delay={0.4}>
+            <PhoneInput
+              country={"in"}
+              value={form.phone}
+              onChange={ handlePhoneChange}
+              inputProps={{
+                name: "phone",
+                required: true,
+                autoFocus: true,
+              }}
+              containerClass="relative mb-4 w-[350px] "
+              inputClass="!text-white !bg-[#202020] !border !border-gray-700 !rounded-2xl p-6 !w-[350px] shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder:text-gray-400"
+              buttonClass="!bg-[#202020] !border-gray-700 hover:!border-amber-500/30 focus:!ring-amber-500"
+              dropdownClass="!bg-[#202020] text-white"
+              placeholder="Enter your phone number"
+            />
+            {/* <input
+              className="mb-4 p-3 w-[350px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              name="phone"
+              type="tel"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder="Enter your phone number"
+              required
+            /> */}
+          </RevealOnScroll>
 
           {/* Email Field */}
-          <RevealOnScroll delay={0.4}>
+          <RevealOnScroll delay={0.6}>
             <input
               className="mb-4 p-3 w-[350px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
               name="email"
@@ -191,7 +229,7 @@ const BillingForm = () => {
           </RevealOnScroll>
 
           {/* Password Field */}
-          <RevealOnScroll delay={0.6}>
+          <RevealOnScroll delay={0.8}>
             <div className="relative w-full max-w-[400px]">
               <input
                 className="mb-4 p-3 w-[350px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
@@ -325,11 +363,12 @@ const BillingForm = () => {
                   Processing...
                 </span>
               ) : (
-                "Pay ₹18,397"
+                "Redirect to payment and pay ₹18397"
               )}
             </button>
           </RevealOnScroll>
         </form>
+        <button onClick={()=>console.log(form)}>form</button>
       </div>
     </>
   );

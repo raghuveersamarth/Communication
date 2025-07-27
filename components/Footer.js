@@ -34,7 +34,8 @@ return (
                         />
                     </div>
                     <a
-                        href="https://www.instagram.com"
+                        target="_blank"
+                        href="https://www.instagram.com/himeshvenk/"
                         className="text-[#fca000] hover:text-gray-300"
                     >
                         Instagram

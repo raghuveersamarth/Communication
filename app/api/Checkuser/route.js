@@ -8,6 +8,7 @@ const supabase = createClient(
 export async function POST(req) {
   const body = await req.json();
   const email = body?.email?.toLowerCase();
+  const phone = body.phone;
 
   const { data, error } = await supabase.auth.admin.listUsers();
 
@@ -18,9 +19,12 @@ export async function POST(req) {
     const userEmail = user.email?.toLowerCase();
     return userEmail === email;
   });
-
-  if (exists) {
-    return NextResponse.json({ exists: true }, { status: 500 });
+  const existsphone = data?.users?.some((user)=>{
+    const userphone = user.phone;
+    return userphone === phone;
+  })
+  if (exists || existsphone) {
+    return NextResponse.json({ exists: true },{user: exists, userphone:existsphone}, { status: 500 });
   } else {
     console.log("ok to proceed");
     return NextResponse.json({ exists: false }, { status: 200 });
