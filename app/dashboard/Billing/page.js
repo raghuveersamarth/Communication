@@ -368,7 +368,6 @@ const BillingForm = () => {
             </button>
           </RevealOnScroll>
         </form>
-        <button onClick={()=>console.log(form)}>form</button>
       </div>
     </>
   );

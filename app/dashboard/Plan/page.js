@@ -101,9 +101,19 @@ const Plan = () => {
               <Link
                 href="/dashboard/Billing"
                 rel="noopener noreferrer"
-                className="border text-center border-amber-500 text-white px-8 py-2 rounded-lg hover:bg-amber-600 transition-colors font-medium"
+                className="border text-center border-amber-500 m-3 text-white px-8 py-2 rounded-lg hover:bg-amber-600 transition-colors font-medium"
               >
                 Create an Account
+              </Link>
+            </RevealOnScroll>
+            
+            {/* already have an account */}
+            <RevealOnScroll delay={1.4} className="mt-4">
+              <Link
+                href="/dashboard/Login"
+                className="text-amber-500 hover:underline text-sm "
+              >
+                Already have an account? Sign in
               </Link>
             </RevealOnScroll>
           </div>

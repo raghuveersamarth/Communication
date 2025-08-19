@@ -5,14 +5,13 @@ import { useState,useEffect } from "react";
 const Footer = () => {
 
 return (
-    <footer className="bg-[#141414] w-[98.5vw] text-white p-6 pt-10 mt-20">
-        <div className="container mx-auto flex  justify-between items-center flex-col md:flex-row">
-            <div className="info">
+    <footer className="bg-[#141414] w-full text-white p-4 pt-8 mt-20">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="info text-center md:text-left">
                 <p className="text-sm">
-                    &copy; {new Date().getFullYear()} Communication Mastery. All rights
-                    reserved.
+                    &copy; {new Date().getFullYear()} Communication Mastery. All rights reserved.
                 </p>
-                <div className="mt-4 space-x-4">
+                <div className="mt-4 flex flex-col md:flex-row md:space-x-4 space-y-2 md:space-y-0 items-center md:items-start">
                     <a href="/privacy" className="text-[#fca000] hover:text-gray-300">
                         Privacy Policy
                     </a>
@@ -21,15 +20,12 @@ return (
                     </a>
                 </div>
             </div>
-            <div className="socials flex flex-col gap-3">
+            <div className="socials flex flex-col gap-3 items-center md:items-end">
                 <div className="flex gap-3 items-center">
-                    <div
-                        className="relative"
-                        style={{ display: "inline-block" }}
-                    >
+                    <div className="relative inline-block">
                         <img
-                            src={ "svgs/coloredig.svg"}
-                            className={`h-8 cursor-pointer transition-all duration-300`}
+                            src={"svgs/coloredig.svg"}
+                            className="h-8 cursor-pointer transition-all duration-300"
                             alt=""
                         />
                     </div>

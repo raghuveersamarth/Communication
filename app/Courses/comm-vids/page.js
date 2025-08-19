@@ -11,7 +11,27 @@ const Videos = () => {
   const router = useRouter();
   const [session, setSession] = useState({});
   const [isSessionActive, setIsSessionActive] = useState(false);
-  const [selectedmodule, setselectedmodule] = useState("")
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedModule, setSelectedModule] = useState(null);
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+
+  const modules = [
+    "Unlock Your Voice Through Foundations",
+    "Master Body Language",
+    "Tonality Mastery + Accent Neutralization",
+    "Social Skills and Networking Mastery",
+    "Tell Powerful Stories",
+    "Influence and Persuasion Tactics",
+    "Negotiation + Real World Influence Frameworks",
+    "Public Speaking and Presentation Skills",
+    "Speak Like a Creator",
+    "Build Inner and Outer Confidence",
+    "Speak Like a Pro",
+    "BOUNUS : Vocabulary Mastery",
+  ];
+
   useEffect(() => {
     const getSession = async () => {
       try {
@@ -54,40 +74,18 @@ const Videos = () => {
     // return () => subscription?.unsubscribe();
   }, []);
 
-  const modules = [
-    "Unlock Your Voice Through Foundations",
-    "Master Body Language",
-    "Tonality Mastery + Accent Neutralization",
-    "Social Skills and Networking Mastery",
-    "Tell Powerful Stories",
-    "Influence and Persuasion Tactics",
-    "Negotiation + Real World Influence Frameworks",
-    "Public Speaking and Presentation Skills",
-    "Speak Like a Creator",
-    "Build Inner and Outer Confidence",
-    "Speak Like a Pro",
-    "BOUNUS : Vocabulary Mastery",
-  ];
-
-  const [selectedModule, setSelectedModule] = useState(null);
-  const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState(null);
-
   useEffect(() => {
     const fetchVideos = async () => {
       if (selectedModule === null) return;
 
       setLoading(true);
       setVideos([]);
-      setSelectedVideo(null); // reset video on module change
+      setSelectedVideo(null);
 
       const { data, error } = await supabase
         .from("communication_videos_by_modules")
         .select("title, youtube_id, thumbnail_url")
         .eq("module_id", selectedModule + 1);
-
-      console.log(data);
 
       if (error) {
         console.error("Error fetching videos:", error.message);
@@ -102,39 +100,81 @@ const Videos = () => {
   }, [selectedModule]);
 
   return (
-    <section className={`flex w-full h-screen ${inter.className}`}>
+    <section className={`flex w-full h-screen ${inter.className} relative`}>
+      {/* Hamburger icon - only when sidebar is closed on mobile */}
+      {!sidebarOpen && (
+        <button
+          className="md:hidden fixed top-4 left-4 z-50 bg-[#fca000] p-2 rounded-md shadow-lg"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open sidebar"
+        >
+          <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
+            <rect y="4" width="24" height="2" rx="1" fill="#171616" />
+            <rect y="11" width="24" height="2" rx="1" fill="#171616" />
+            <rect y="18" width="24" height="2" rx="1" fill="#171616" />
+          </svg>
+        </button>
+      )}
+
       {/* Sidebar */}
-      <aside className="flex flex-col w-[25%] bg-[#171616] p-6 shadow-lg overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-6 text-amber-400">
-          Choose a Module
-        </h2>
-        <ul className="space-y-3">
+      <aside
+        className={`fixed md:static top-0 left-0 h-full md:h-auto w-80 md:w-[30%] bg-[#171616] p-6 shadow-lg overflow-y-auto z-40 transition-transform duration-300 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
+      >
+        {/* Close button (mobile only) */}
+        <div className="md:hidden flex justify-end mb-4">
+          <button
+            className="text-white text-3xl"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Close sidebar"
+          >
+            &times;
+          </button>
+        </div>
+        <h2 className="text-2xl font-bold text-amber-400 mb-4">Choose a Module</h2>
+        <ul className="space-y-4">
           {modules.map((module, idx) => (
             <li
               key={idx}
-              className={`cursor-pointer rounded-lg px-4 py-2 bg-[#232222] hover:bg-amber-500 hover:text-black transition-colors font-semibold text-lg ${
-                selectedModule === idx ? "bg-amber-500 text-black" : ""
-              }`}
-              onClick={() => setSelectedModule(idx)}
+              className={`cursor-pointer rounded-xl px-4 py-3 flex items-center gap-3 border-2 transition-all font-semibold text-base
+                ${
+                  selectedModule === idx
+                    ? "bg-amber-500 text-black border-amber-500 shadow-lg scale-105"
+                    : "bg-[#232222] text-white border-transparent hover:bg-amber-400 hover:text-black hover:border-amber-400"
+                }`}
+              onClick={() => {
+                setSelectedModule(idx);
+                setSidebarOpen(false);
+              }}
             >
-              {`Module ${idx + 1}`}
+              <span className={`flex items-center justify-center w-8 h-8 rounded-full font-bold
+                ${selectedModule === idx ? "bg-black text-amber-400" : "bg-amber-400 text-black"}`}>
+                {idx + 1}
+              </span>
+              <span className="truncate">{module}</span>
             </li>
           ))}
         </ul>
       </aside>
 
+      {/* Overlay for mobile when sidebar is open */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 z-30 md:hidden transition-opacity duration-300"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto bg-[#0f0f0f]">
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto bg-[#0f0f0f] ml-0 md:ml-0">
         {selectedModule === null ? (
           <div className="text-2xl text-center text-gray-400 mt-20">
             Select a module to view its videos.
           </div>
         ) : loading ? (
-          <div className="text-center text-amber-400 text-xl mt-20">
-            Loading...
-          </div>
+          <div className="text-center text-amber-400 text-xl mt-20">Loading...</div>
         ) : selectedVideo ? (
-          // FULL VIDEO PLAYER VIEW
           <div className="flex flex-col items-start gap-4">
             <button
               className="mb-4 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
@@ -152,12 +192,9 @@ const Videos = () => {
                 allowFullScreen
               ></iframe>
             </div>
-            <h1 className="text-2xl text-white font-bold mt-4">
-              {selectedVideo.title}
-            </h1>
+            <h1 className="text-2xl text-white font-bold mt-4">{selectedVideo.title}</h1>
           </div>
         ) : (
-          // GRID OF VIDEO CARDS
           <>
             <h3 className="text-3xl font-bold mb-6 text-amber-400">
               Videos in Module {selectedModule + 1}

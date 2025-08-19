@@ -1,128 +1,102 @@
-'use client'
-import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
-import { useRouter, useSearchParams } from 'next/navigation'
+"use client";
+import { useState } from "react";
+import { supabase } from "@/app/lib/supabase";
+import Image from "next/image";
 
 export default function ResetPasswordPage() {
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const [showLogin, SetShowlogin] = useState(false);
+  const [seepassword, setseepassword] = useState(false)
+  const [seeconpassword, setseeconpassword] = useState(false)
+  const [form, setform] = useState({
+    password: "",
+    confirmPassword: "",
+  });
 
-  useEffect(() => {
-    // Handle the auth callback
-    const handleAuthCallback = async () => {
-      const { error } = await supabase.auth.getSession()
-      if (error) {
-        setError('Invalid or expired reset link')
-      }
+  // Password validation function
+  const isValidPassword = (password) => {
+    // At least one uppercase, one number, one special character, min 8 chars
+    return /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/.test(password);
+  };
+
+  const handlechange = (e) => {
+    setform({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handlepasschange = async (e) => {
+    e.preventDefault();
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match")
+      
+      return;
     }
-
-    handleAuthCallback()
-  }, [])
-
-  const handleUpdatePassword = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-    setMessage('')
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match')
-      setLoading(false)
-      return
+    if (!isValidPassword(form.password)) {
+      alert("Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.");
+      return;
     }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long')
-      setLoading(false)
-      return
+    const { error } = await supabase.auth.updateUser({ password: form.password });
+    if (error) {
+      alert("Error updating password: " + error.message);
+      return;
     }
-
-    try {
-      const { error } = await supabase.auth.updateUser({
-        password: password
-      })
-
-      if (error) {
-        setError(error.message)
-      } else {
-        setMessage('Password updated successfully!')
-        setTimeout(() => {
-          router.push('/login')
-        }, 2000)
-      }
-    } catch (err) {
-      setError('An unexpected error occurred')
-    } finally {
-      setLoading(false)
-    }
-  }
+    SetShowlogin(true);
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Update your password
-          </h2>
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br">
+      <form
+        className="bg-[#252525] p-8 rounded-xl shadow-lg flex flex-col gap-5 w-full max-w-sm sm:p-6"
+        onSubmit={handlepasschange}
+      >
+        <h2 className="text-2xl font-semibold text-amber-500 text-center mb-2">
+          Reset Password
+        </h2>
+        <div className="relative">
+
+        <input
+          type={seepassword?"text":"password"}
+          name="password"
+          placeholder="New Password"
+          value={form.password}
+          onChange={handlechange}
+          className="p-3 border border-gray-300 rounded-lg text-base outline-none focus:border-amber-500 transition"
+          required
+          />
+        <Image className="absolute top-3 left-44 cursor-pointer" onClick={()=>setseepassword(!seepassword)} src={seepassword?"/svgs/eyes.svg":"/svgs/eyesnot.svg"} alt="eyes" height={25} width={25}/>
+          </div>
+        <div className="relative">
+
+        <input
+          type={seeconpassword?"text":"password"}
+          name="confirmPassword"
+          placeholder="confirm Password"
+          value={form.confirmPassword}
+          onChange={handlechange}
+          className="p-3 border border-gray-300 rounded-lg text-base outline-none focus:border-amber-500 transition"
+          required
+          />
+        <Image className="absolute top-3 left-44 cursor-pointer" onClick={()=>setseeconpassword(!seeconpassword)} src={seeconpassword?"/svgs/eyes.svg":"/svgs/eyesnot.svg"} alt="eyes" height={25} width={25}/>
+          </div>
+        <button
+          type="submit"
+          className="bg-amber-500 text-white rounded-lg p-3 text-base font-medium hover:bg-amber-600 transition"
+        >
+          Reset Password
+        </button>
+      </form>
+      {showLogin && (
+        <div className="mt-6 bg-indigo-100 p-5 rounded-lg text-center shadow-md w-full max-w-sm">
+          <p className="text-gray-700">Password reset successfully! You can now log in.</p>
+          <button
+            className="mt-3 bg-emerald-500 text-white rounded-lg px-5 py-2 text-base font-medium hover:bg-emerald-600 transition"
+            onClick={() => (window.location.href = "/dashboard/Login")}
+          >
+            Go to Login
+          </button>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleUpdatePassword}>
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="password" className="sr-only">
-                New Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="New password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="confirmPassword" className="sr-only">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Confirm new password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {error && (
-            <div className="text-red-600 text-sm text-center">{error}</div>
-          )}
-
-          {message && (
-            <div className="text-green-600 text-sm text-center">{message}</div>
-          )}
-
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-            >
-              {loading ? 'Updating...' : 'Update Password'}
-            </button>
-          </div>
-        </form>
-      </div>
+      )}
     </div>
-  )
+  );
 }
