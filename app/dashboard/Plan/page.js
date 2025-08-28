@@ -30,7 +30,7 @@ const Plan = () => {
                   className={`text-white font-bold text-xl flex items-center gap-3`}
                 >
                   <span className="text-gray-400 text-lg line-through">
-                    ₹24000
+                    ₹24397
                   </span>
                   <span className="text-3xl text-amber-400">₹14397</span>
                 </h2>
