@@ -4,7 +4,7 @@ import { useSession } from "../context/sessionwrapper";
 import Image from "next/image";
 import RevealOnScroll from "@/components/RevealOnScroll";
 
-const discord = () => {
+const Discord = () => {
   const { session, loading } = useSession();
   return (
     <div>
@@ -51,4 +51,4 @@ const discord = () => {
   );
 };
 
-export default discord;
+export default Discord;

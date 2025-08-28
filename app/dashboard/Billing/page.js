@@ -91,7 +91,7 @@ const BillingForm = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           courseId: "comm-course",
-          amount: 18397,
+          amount: 14397,
           email: form.email,
           username: form.username,
           phone: form.phone,
@@ -107,7 +107,7 @@ const BillingForm = () => {
       // Initialize Razorpay checkout
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: 18397 * 100,
+        amount: 14397 * 100,
         currency: "INR",
         order_id: orderId,
         name: "Communication Course",
@@ -363,7 +363,7 @@ const BillingForm = () => {
                   Processing...
                 </span>
               ) : (
-                "Redirect to payment and pay ₹18397"
+                "Redirect to payment and pay ₹14397"
               )}
             </button>
           </RevealOnScroll>

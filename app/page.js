@@ -207,7 +207,7 @@ export default function Home() {
                 transition={{ duration: 0.8 }}
                 className="text-center max-w-4xl mx-auto"
               >
-                <iframe
+                {/* <iframe
                   width="100%"
                   height="100%"
                   src="https://www.youtube.com/embed/nGyVjye1IUc"
@@ -221,7 +221,10 @@ export default function Home() {
                     width: "100%",
                   }}
                   className="w-full h-[220px] md:h-[320px] lg:h-[480px]"
-                ></iframe>
+                ></iframe> */}
+                <video src="videos/Introduction.mp4" controls className="w-full h-[220px] md:h-[320px] lg:h-[480px] rounded-2xl shadow-lg">
+                  Your browser does not support the video tag.
+                </video>
               </motion.div>
             </div>
           )}
