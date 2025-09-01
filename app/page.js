@@ -78,6 +78,7 @@ export default function Home() {
 
     return () => subscription?.unsubscribe();
   }, []);
+  
 
   const Lordicon = () => {
     return (

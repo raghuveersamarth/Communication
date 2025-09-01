@@ -106,14 +106,14 @@ const Plan = () => {
                 Create an Account
               </Link>
             </RevealOnScroll>
-            
+
             {/* already have an account */}
             <RevealOnScroll delay={1.4} className="mt-4">
               <Link
                 href="/dashboard/Login"
-                className="text-amber-500 hover:underline text-sm "
+                className="text-amber-500 hover:underline text-sm  "
               >
-                Already have an account? Sign in
+                <p className="m-3.5">Already have an account? Sign in</p>
               </Link>
             </RevealOnScroll>
           </div>
