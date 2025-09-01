@@ -222,14 +222,12 @@ export default function Home() {
                   }}
                   className="w-full h-[220px] md:h-[320px] lg:h-[480px]"
                 ></iframe> */}
-                <video
-                  src="https://drive.google.com/file/d/1h38X6_kupefWo8rL7SvWGibRrs1eNZ91/preview
-"
-                  controls
-                  className="w-full h-[220px] md:h-[320px] lg:h-[480px] rounded-2xl shadow-lg"
-                >
-                  Your browser does not support the video tag.
-                </video>
+                <iframe
+                  src="https://drive.google.com/file/d/1h38X6_kupefWo8rL7SvWGibRrs1eNZ91/preview"
+                  width="800"
+                  height="450"
+                  allow="autoplay"
+                />
               </motion.div>
             </div>
           )}
