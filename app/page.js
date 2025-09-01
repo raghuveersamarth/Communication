@@ -222,7 +222,12 @@ export default function Home() {
                   }}
                   className="w-full h-[220px] md:h-[320px] lg:h-[480px]"
                 ></iframe> */}
-                <video src="videos/Introduction.mp4" controls className="w-full h-[220px] md:h-[320px] lg:h-[480px] rounded-2xl shadow-lg">
+                <video
+                  src="https://drive.google.com/file/d/1h38X6_kupefWo8rL7SvWGibRrs1eNZ91/preview
+"
+                  controls
+                  className="w-full h-[220px] md:h-[320px] lg:h-[480px] rounded-2xl shadow-lg"
+                >
                   Your browser does not support the video tag.
                 </video>
               </motion.div>
@@ -260,13 +265,11 @@ export default function Home() {
         </div>
 
         <RevealOnScroll className="flex justify-center mt-12 self-center">
-          {
-            isSessionActive ? (
-              <CTAButton href="/Courses">Start Learning</CTAButton>
-            ) : (
-              <CTAButton href="/dashboard/Billing">Join Now</CTAButton>
-            )
-          }
+          {isSessionActive ? (
+            <CTAButton href="/Courses">Start Learning</CTAButton>
+          ) : (
+            <CTAButton href="/dashboard/Billing">Join Now</CTAButton>
+          )}
         </RevealOnScroll>
       </section>
 
