@@ -13,7 +13,7 @@ const Discord = () => {
           <div className="min-h-screen  flex items-center justify-center px-4">
             <div className="bg-[#313338] text-white rounded-xl p-6 w-full max-w-md shadow-lg text-center">
               <Image
-                src="/him.jpg" // Replace with your server icon
+                src="/him2.jpg" // Replace with your server icon
                 alt="Community Logo"
                 width={80}
                 height={80}

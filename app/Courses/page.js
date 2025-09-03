@@ -78,7 +78,7 @@ const Courses = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
             <div onClick={()=>reroute()} className="relative shadow-lg border gap-5 border-amber-500 rounded-xl flex flex-col cursor-pointer items-center p-8 hover:shadow-2xl transition-shadow duration-300 overflow-hidden min-h-[300px]">
               <Image
-                src="/him.jpg"
+                src="/him2.jpg"
                 alt="Communication"
                 fill
                 className="object-cover absolute inset-0 z-0 opacity-30"

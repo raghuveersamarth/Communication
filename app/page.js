@@ -350,7 +350,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row gap-8 md:gap-14 items-center text-[white] p-8 md:p-12 rounded-xl shadow-md">
               <div className="w-full md:w-1/3">
                 <img
-                  src="/him.jpg"
+                  src="/him2.jpg"
                   alt="Coach Himesh"
                   className="rounded-lg shadow-lg w-full h-auto object-cover"
                   loading="lazy"

@@ -15,7 +15,7 @@ const page = () => {
         {/* add coach's photo
          */}
             <img
-              src='him.jpg'
+              src='him2.jpg'
               alt='Coach Himesh'
               className='h-[50vh] rounded-lg mb-4'></img>
               <div>
