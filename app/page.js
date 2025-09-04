@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Footer from "@/components/Footer";
 import RevealOnScroll from "@/components/RevealOnScroll";
@@ -168,7 +169,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="min-h-[80vh] flex flex-col items-center justify-center pt-20 pb-32 px-4 md:px-8 lg:px-16">
         <h1 className="text-4xl md:text-5xl font-serif font-bold text-amber-500 mb-10 md:mb-14">
-          Communication Mastery Mechanics
+          Himesh's Communication Mastery Mechanics
         </h1>
         {isSessionActive ? (
           ""
@@ -349,9 +350,11 @@ export default function Home() {
           <RevealOnScroll>
             <div className="flex flex-col md:flex-row gap-8 md:gap-14 items-center text-[white] p-8 md:p-12 rounded-xl shadow-md">
               <div className="w-full md:w-1/3">
-                <img
+                <Image
                   src="/him2.jpg"
                   alt="Coach Himesh"
+                  width={300}
+                  height={300}
                   className="rounded-lg shadow-lg w-full h-auto object-cover"
                   loading="lazy"
                 />
