@@ -12,7 +12,7 @@ return (
                     &copy; {new Date().getFullYear()} Communication Mastery. All rights reserved.
                 </p>
                 <div className="mt-4 flex flex-col md:flex-row md:space-x-4 space-y-2 md:space-y-0 items-center md:items-start">
-                    <a href="/privacy" className="text-[#fca000] hover:text-gray-300">
+                    <a href="/privacy-policy" className="text-[#fca000] hover:text-gray-300">
                         Privacy Policy
                     </a>
                     <a href="/terms" className="text-[#fca000] hover:text-gray-300">

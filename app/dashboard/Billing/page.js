@@ -7,6 +7,7 @@ import { supabase } from "@/app/lib/supabase";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
 import PhoneInput from "react-phone-input-2";
+import Link from "next/link";
 import "react-phone-input-2/lib/style.css";
 
 const inter = Inter({ subsets: ["latin"], weight: "200", display: "swap" });
@@ -33,10 +34,10 @@ const BillingForm = () => {
     };
     checkSession();
   }, [router]);
-  
+
   const handlePhoneChange = (value) => {
-  handleChange({ target: { name: 'phone', value } });
-};
+    handleChange({ target: { name: "phone", value } });
+  };
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -167,7 +168,7 @@ const BillingForm = () => {
       />
 
       <div
-        className={`${inter.className} mt-16 border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 h-[600px] w-[800px] bg-[#101010] flex flex-col items-center p-6 justify-center`}
+        className={`${inter.className} mt-16 border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 bg-[#101010] flex flex-col items-center p-6 justify-center w-full max-w-xl min-h-[650px]`}
       >
         <h1 className="mb-12 font-bold text-3xl">Create an account</h1>
 
@@ -192,7 +193,7 @@ const BillingForm = () => {
             <PhoneInput
               country={"in"}
               value={form.phone}
-              onChange={ handlePhoneChange}
+              onChange={handlePhoneChange}
               inputProps={{
                 name: "phone",
                 required: true,
@@ -204,17 +205,7 @@ const BillingForm = () => {
               dropdownClass="!bg-[#202020] text-white"
               placeholder="Enter your phone number"
             />
-            {/* <input
-              className="mb-4 p-3 w-[350px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
-              name="phone"
-              type="tel"
-              value={form.phone}
-              onChange={handleChange}
-              placeholder="Enter your phone number"
-              required
-            /> */}
           </RevealOnScroll>
-
           {/* Email Field */}
           <RevealOnScroll delay={0.6}>
             <input
@@ -227,7 +218,6 @@ const BillingForm = () => {
               required
             />
           </RevealOnScroll>
-
           {/* Password Field */}
           <RevealOnScroll delay={0.8}>
             <div className="relative w-full max-w-[400px]">
@@ -264,15 +254,12 @@ const BillingForm = () => {
               </button>
             </div>
           </RevealOnScroll>
-
           {showPasswordError && (
             <div className="w-full max-w-[300px] text-red-500 text-sm">
               Password must contain: 1 special character, 1 capital letter and
               one Number
             </div>
           )}
-
-          {/* Confirm Password Field */}
           <RevealOnScroll delay={0.8}>
             <div className="relative w-full max-w-[400px]">
               <input
@@ -284,6 +271,29 @@ const BillingForm = () => {
                 placeholder="Confirm password"
                 required
               />
+              <div className="flex items-center mb-2 mt-2">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  checked={form.termsAccepted || false}
+                  onChange={(e) =>
+                    setForm({ ...form, termsAccepted: e.target.checked })
+                  }
+                  className="mr-2 accent-amber-500"
+                  required
+                />
+                <label htmlFor="terms" className="text-sm text-gray-300">
+                  I have read and agree to the{" "}
+                  <Link
+                    href="/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-500 underline hover:text-amber-400"
+                  >
+                    Terms and Conditions
+                  </Link>
+                </label>
+              </div>
               <button
                 type="button"
                 onClick={() =>
@@ -309,13 +319,11 @@ const BillingForm = () => {
               </button>
             </div>
           </RevealOnScroll>
-
           {showConfirmPasswordError && (
             <div className="w-full max-w-[400px] text-red-500 text-sm">
               Passwords do not match
             </div>
           )}
-
           {/* Submit Button */}
           <RevealOnScroll delay={1.0}>
             <button

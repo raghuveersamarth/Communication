@@ -11,7 +11,7 @@ const Discord = () => {
       {session ? (
         <RevealOnScroll delay={0.5}>
           <div className="min-h-screen  flex items-center justify-center px-4">
-            <div className="bg-[#313338] text-white rounded-xl p-6 w-full max-w-md shadow-lg text-center">
+            <div className="bg-[#1c1c1c] text-white rounded-xl p-6 w-full max-w-md shadow-lg text-center">
               <Image
                 src="/him2.jpg" // Replace with your server icon
                 alt="Community Logo"
@@ -24,13 +24,13 @@ const Discord = () => {
                 You've been invited to join
               </p>
               <h2 className="text-2xl font-bold mt-1 mb-4">
-                My Discord Server
+                Communication Mastery Mechanics
               </h2>
 
               <div className="flex gap-4 justify-center text-sm text-gray-400 mb-6"></div>
 
               <a
-                href="https://discord.gg/yourinvitecode" // Replace with your real invite
+                href="https://discord.gg/bC25FHwd" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-lg transition"

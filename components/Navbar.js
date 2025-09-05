@@ -27,7 +27,6 @@ const Navbar = () => {
         } = await supabase.auth.getSession();
 
         if (error) throw error;
-  
 
         setSession(session);
         setIsSessionActive(
@@ -54,7 +53,6 @@ const Navbar = () => {
     });
 
     return () => subscription?.unsubscribe();
-
   }, []);
 
   const handleLogout = async () => {
@@ -83,7 +81,7 @@ const Navbar = () => {
   const hiddenRoutes = [
     "/Courses",
     "/discord",
-    '/auth/reset',
+    "/auth/reset",
     "/about",
     "/dashboard/Billing",
     "/dashboard/Plan",
@@ -92,8 +90,12 @@ const Navbar = () => {
     "/payment-success",
     "/Courses/comm-vids",
     "/auth/forgot-password",
+    "/refund-policy",
+    "/terms-of-service",
+    "/privacy-policy",
+    "/shipping-policy",
+    "/Contact",
   ];
-
 
   if (hiddenRoutes.includes(pathname)) {
     return null;
@@ -116,9 +118,9 @@ const Navbar = () => {
                 height={40}
                 className="mr-2"
               />
-              </Link>
+            </Link>
             <Link href="/" className="text-[#ff6201] hover:text-gray-300">
-              COMMUNICATION 
+              COMMUNICATION
             </Link>
           </div>
 
@@ -155,8 +157,7 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Desktop menu */}
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex space-x-4 items-center">
             {!isSessionActive ? (
               <>
                 <Link href="/about" className="text-white hover:text-gray-300">
@@ -174,6 +175,48 @@ const Navbar = () => {
                 >
                   Explore Courses
                 </Link>
+
+                {/* Help Dropdown */}
+                <div className="relative group">
+                  <button className="text-white hover:text-gray-300 flex items-center focus:outline-none">
+                    Help
+                    <svg
+                      className="ml-1 w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                  <div className="absolute left-0 mt-2 w-44 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-200 z-50">
+                    <Link
+                      href="/refund-policy"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >
+                      Refund Policy
+                    </Link>
+                    <Link
+                      href="/privacy-policy"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >
+                      Privacy Policy
+                    </Link>
+                    <Link
+                      href="/Contact"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >
+                      Contact Us
+                    </Link>
+                  </div>
+                </div>
+
                 <Link
                   href="/dashboard/Plan"
                   className="text-white hover:text-gray-300"
@@ -185,18 +228,64 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link href="/Courses" className="text-white hover:text-gray-300">
-                  Courses
-                </Link>
-                <Link href="/discord" className="text-white hover:text-gray-300">
-                  Discord
-                </Link>
                 <Link
-                  href="/auth/forgot-password"
+                  href="/Courses"
                   className="text-white hover:text-gray-300"
                 >
-                  Reset Password
+                  Courses
                 </Link>
+                <Link
+                  href="/discord"
+                  className="text-white hover:text-gray-300"
+                >
+                  Discord
+                </Link>
+                <div className="relative group">
+                  <button className="text-white hover:text-gray-300 flex items-center focus:outline-none">
+                    Help
+                    <svg
+                      className="ml-1 w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                  <div className="absolute left-0 mt-2 w-44 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-200 z-50">
+                    <Link
+                      href="/refund-policy"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >
+                      Refund Policy
+                    </Link>
+                    <Link
+                      href="/privacy-policy"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >
+                      Privacy Policy
+                    </Link>
+                    <Link
+                      href="/Contact"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >
+                      Contact Us
+                    </Link>
+                    <Link
+                      href="/auth/forgot-password"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >
+                      Reset Password
+                    </Link>
+                  </div>
+                </div>
+
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -241,9 +330,38 @@ const Navbar = () => {
                       href="/Courses"
                       className="text-amber-500 hover:text-amber-300"
                       onClick={() => setMenuOpen(false)}
-                    >
+                      >
                       Explore Courses
                     </Link>
+                    <Link
+                      href="/refund-policy"
+                      className=" text-white hover:text-gray-300"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Refund Policy
+                    </Link>
+                    <Link
+                      href="/privacy-policy"
+                      className=" text-white hover:text-gray-300"
+                      onClick={() => setMenuOpen(false)}
+                      >
+                      Privacy Policy
+                    </Link>
+                    <Link
+                      href="/Contact"
+                      className=" text-white hover:text-gray-300"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                      Contact Us
+                    </Link>
+                    <Link
+                      href="/auth/forgot-password"
+                      className=" text-white hover:text-gray-300"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Reset Password
+                    </Link>
+                    
                     <Link
                       href="/dashboard/Plan"
                       className="text-white hover:text-gray-300"
@@ -269,6 +387,27 @@ const Navbar = () => {
                       onClick={() => setMenuOpen(false)}
                     >
                       Discord
+                    </Link>
+                                        <Link
+                      href="/refund-policy"
+                      className=" text-white hover:text-gray-300"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Refund Policy
+                    </Link>
+                    <Link
+                      href="/privacy-policy"
+                      className=" text-white hover:text-gray-300"
+                      onClick={() => setMenuOpen(false)}
+                      >
+                      Privacy Policy
+                    </Link>
+                    <Link
+                      href="/Contact"
+                      className=" text-white hover:text-gray-300"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                      Contact Us
                     </Link>
                     <Link
                       href="/auth/forgot-password"
@@ -325,7 +464,9 @@ const Navbar = () => {
               }}
               className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4"
             >
-              <h3 className="text-lg text-[#ef8012] font-medium mb-4">Confirm Logout</h3>
+              <h3 className="text-lg text-[#ef8012] font-medium mb-4">
+                Confirm Logout
+              </h3>
               <p className="text-gray-600 mb-6">
                 Are you sure you want to sign out?
               </p>
