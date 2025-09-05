@@ -20,7 +20,7 @@ export default function ForgotPasswordPage() {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br px-4 sm:px-6 lg:px-8">
       <RevealOnScroll delay={0.5}>
         <form
-          className={`flex flex-col items-center justify-center bg-[#252525] rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-md ${inter.className}`}
+          className={`flex flex-col items-center justify-center bg-[#121212] rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-md ${inter.className}`}
           onSubmit={async (e) => {
             e.preventDefault()
             setError('')
