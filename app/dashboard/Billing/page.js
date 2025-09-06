@@ -24,7 +24,7 @@ const BillingForm = () => {
     password: "",
     confirmPassword: "",
   });
-  // Check for existing session
+
   useEffect(() => {
     const checkSession = async () => {
       const {
@@ -38,11 +38,11 @@ const BillingForm = () => {
   const handlePhoneChange = (value) => {
     handleChange({ target: { name: "phone", value } });
   };
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Password validation rules
   const isPasswordValid = (password) => {
     return (
       password.length >= 8 &&
@@ -52,7 +52,6 @@ const BillingForm = () => {
     );
   };
 
-  // Form validation states
   const isFormIncomplete = Object.values(form).some((value) => !value);
   const passwordsMatch = form.password === form.confirmPassword;
   const passwordMeetsRequirements = isPasswordValid(form.password);
@@ -69,7 +68,6 @@ const BillingForm = () => {
 
     setIsLoading(true);
     try {
-      // Check if user exists
       const checkRes = await fetch("/api/Checkuser", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -86,7 +84,6 @@ const BillingForm = () => {
         return;
       }
 
-      // Create Razorpay order
       const orderRes = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,7 +102,6 @@ const BillingForm = () => {
         throw new Error(orderError || "Failed to create payment order");
       }
 
-      // Initialize Razorpay checkout
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: 14397 * 100,
@@ -127,7 +123,7 @@ const BillingForm = () => {
         prefill: {
           name: form.username,
           email: form.email,
-          contact: form.phone, // Add if you collect phone numbers
+          contact: form.phone,
         },
         theme: {
           color: "#e49e12",
@@ -139,7 +135,7 @@ const BillingForm = () => {
           },
         },
       };
-      const setitem = localStorage.setItem(
+      localStorage.setItem(
         "user token",
         JSON.stringify({
           email: form.email,
@@ -156,7 +152,6 @@ const BillingForm = () => {
     } finally {
       setIsLoading(false);
     }
-    // console.log("Payment button clicked", form);
   };
 
   return (
@@ -168,18 +163,20 @@ const BillingForm = () => {
       />
 
       <div
-        className={`${inter.className} mt-16 border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 bg-[#101010] flex flex-col items-center p-6 justify-center w-full max-w-xl min-h-[650px]`}
+        className={`${inter.className} mt-16 border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 bg-[#101010] flex flex-col items-center p-6 justify-center w-full max-w-md sm:max-w-lg min-h-[600px]`}
       >
-        <h1 className="mb-12 font-bold text-3xl">Create an account</h1>
+        <h1 className="mb-12 font-bold text-2xl sm:text-3xl">
+          Create an account
+        </h1>
 
         <form
           onSubmit={handlePayment}
           className="flex flex-col items-center gap-4 w-full"
         >
-          {/* Username Field */}
+          {/* Username */}
           <RevealOnScroll delay={0.2}>
             <input
-              className="mb-4 p-3 w-[350px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              className="mb-4 p-3 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
               name="username"
               type="text"
               value={form.username}
@@ -189,6 +186,8 @@ const BillingForm = () => {
               minLength={3}
             />
           </RevealOnScroll>
+
+          {/* Phone */}
           <RevealOnScroll delay={0.4}>
             <PhoneInput
               country={"in"}
@@ -197,19 +196,19 @@ const BillingForm = () => {
               inputProps={{
                 name: "phone",
                 required: true,
-                autoFocus: true,
               }}
-              containerClass="relative mb-4 w-[350px] "
-              inputClass="!text-white !bg-[#202020] !border !border-gray-700 !rounded-2xl p-6 !w-[350px] shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder:text-gray-400"
+              containerClass="relative mb-4 w-full"
+              inputClass="!text-white !bg-[#202020] !border !border-gray-700 !rounded-2xl p-3 !w-full shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500 placeholder:text-gray-400"
               buttonClass="!bg-[#202020] !border-gray-700 hover:!border-amber-500/30 focus:!ring-amber-500"
               dropdownClass="!bg-[#202020] text-white"
               placeholder="Enter your phone number"
             />
           </RevealOnScroll>
-          {/* Email Field */}
+
+          {/* Email */}
           <RevealOnScroll delay={0.6}>
             <input
-              className="mb-4 p-3 w-[350px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              className="mb-4 p-3 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
               name="email"
               type="email"
               value={form.email}
@@ -218,11 +217,12 @@ const BillingForm = () => {
               required
             />
           </RevealOnScroll>
-          {/* Password Field */}
+
+          {/* Password */}
           <RevealOnScroll delay={0.8}>
-            <div className="relative w-full max-w-[400px]">
+            <div className="relative w-full">
               <input
-                className="mb-4 p-3 w-[350px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="mb-4 p-3 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
                 name="password"
                 type={passwordVisible ? "text" : "password"}
                 value={form.password}
@@ -236,34 +236,28 @@ const BillingForm = () => {
                 onClick={() => setPasswordVisible(!passwordVisible)}
                 className="absolute right-3 top-3.5 text-gray-400 hover:text-amber-500 transition-colors"
               >
-                {passwordVisible ? (
-                  <Image
-                    src="/svgs/eyes.svg"
-                    alt="Hide"
-                    width={20}
-                    height={20}
-                  />
-                ) : (
-                  <Image
-                    src="/svgs/eyesnot.svg"
-                    alt="Show"
-                    width={20}
-                    height={20}
-                  />
-                )}
+                <Image
+                  src={passwordVisible ? "/svgs/eyes.svg" : "/svgs/eyesnot.svg"}
+                  alt="Toggle password"
+                  width={20}
+                  height={20}
+                />
               </button>
             </div>
           </RevealOnScroll>
+
           {showPasswordError && (
-            <div className="w-full max-w-[300px] text-red-500 text-sm">
+            <div className="w-full text-red-500 text-sm">
               Password must contain: 1 special character, 1 capital letter and
-              one Number
+              one number
             </div>
           )}
+
+          {/* Confirm Password */}
           <RevealOnScroll delay={0.8}>
-            <div className="relative w-full max-w-[400px]">
+            <div className="relative w-full">
               <input
-                className="mb-4 p-3 w-[350px] bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="mb-4 p-3 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
                 name="confirmPassword"
                 type={confirmPasswordVisible ? "text" : "password"}
                 value={form.confirmPassword}
@@ -271,6 +265,8 @@ const BillingForm = () => {
                 placeholder="Confirm password"
                 required
               />
+
+              {/* Terms */}
               <div className="flex items-center mb-2 mt-2">
                 <input
                   type="checkbox"
@@ -294,6 +290,7 @@ const BillingForm = () => {
                   </Link>
                 </label>
               </div>
+
               <button
                 type="button"
                 onClick={() =>
@@ -301,34 +298,31 @@ const BillingForm = () => {
                 }
                 className="absolute right-3 top-3.5 text-gray-400 hover:text-amber-500 transition-colors"
               >
-                {confirmPasswordVisible ? (
-                  <Image
-                    src="/svgs/eyes.svg"
-                    alt="Hide"
-                    width={20}
-                    height={20}
-                  />
-                ) : (
-                  <Image
-                    src="/svgs/eyesnot.svg"
-                    alt="Show"
-                    width={20}
-                    height={20}
-                  />
-                )}
+                <Image
+                  src={
+                    confirmPasswordVisible
+                      ? "/svgs/eyes.svg"
+                      : "/svgs/eyesnot.svg"
+                  }
+                  alt="Toggle confirm password"
+                  width={20}
+                  height={20}
+                />
               </button>
             </div>
           </RevealOnScroll>
+
           {showConfirmPasswordError && (
-            <div className="w-full max-w-[400px] text-red-500 text-sm">
+            <div className="w-full text-red-500 text-sm">
               Passwords do not match
             </div>
           )}
-          {/* Submit Button */}
+
+          {/* Submit */}
           <RevealOnScroll delay={1.0}>
             <button
               type="submit"
-              className={`mt-4 border border-amber-500 text-white px-8 py-3 rounded-lg transition-colors font-medium w-full max-w-[400px] ${
+              className={`mt-4 border border-amber-500 text-white px-6 py-3 rounded-lg transition-colors font-medium w-full ${
                 isLoading
                   ? "bg-amber-600/50 cursor-not-allowed"
                   : "hover:bg-amber-600 cursor-pointer"
