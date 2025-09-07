@@ -212,7 +212,7 @@ export default function Home() {
               >
                 <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
                   <iframe
-                    src="https://youtu.be/y3kk8iyeF2U?feature=shared"
+                    src="https://youtube/y3kk8iyeF2U?feature=shared"
                     allow="autoplay"
                     className="absolute top-0 left-0 w-full h-full rounded-xl"
                     style={{ minHeight: "180px" }}
