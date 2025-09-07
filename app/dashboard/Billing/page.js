@@ -163,9 +163,9 @@ const BillingForm = () => {
       />
 
       <div
-        className={`${inter.className} mt-16 border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 bg-[#101010] flex flex-col items-center p-6 justify-center w-full max-w-md sm:max-w-lg min-h-[600px]`}
+        className={`${inter.className} mt-8 border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 bg-[#101010] flex flex-col items-center p-4 sm:p-6 justify-center w-full max-w-[90vw] sm:max-w-lg min-h-[60vh]`}
       >
-        <h1 className="mb-12 font-bold text-2xl sm:text-3xl">
+        <h1 className="mb-8 font-bold text-xl sm:text-3xl text-center">
           Create an account
         </h1>
 
@@ -176,7 +176,7 @@ const BillingForm = () => {
           {/* Username */}
           <RevealOnScroll delay={0.2}>
             <input
-              className="mb-4 p-3 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              className="mb-2 py-3 px-4 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500 text-base"
               name="username"
               type="text"
               value={form.username}
@@ -184,6 +184,7 @@ const BillingForm = () => {
               placeholder="Enter your username"
               required
               minLength={3}
+              style={{ minWidth: 0 }}
             />
           </RevealOnScroll>
 
@@ -197,24 +198,26 @@ const BillingForm = () => {
                 name: "phone",
                 required: true,
               }}
-              containerClass="relative mb-4 w-full"
-              inputClass="!text-white !bg-[#202020] !border !border-gray-700 !rounded-2xl p-3 !w-full shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500 placeholder:text-gray-400"
+              containerClass="relative mb-2 w-full"
+              inputClass="!text-white !bg-[#202020] !border !border-gray-700 !rounded-2xl !py-3 !px-4 !w-full shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:!border-amber-500/30 focus:!outline-none focus:!ring-1 focus:!ring-amber-500 placeholder:!text-gray-400 !text-base"
               buttonClass="!bg-[#202020] !border-gray-700 hover:!border-amber-500/30 focus:!ring-amber-500"
               dropdownClass="!bg-[#202020] text-white"
               placeholder="Enter your phone number"
+              style={{ minWidth: 0 }}
             />
           </RevealOnScroll>
 
           {/* Email */}
           <RevealOnScroll delay={0.6}>
             <input
-              className="mb-4 p-3 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              className="mb-2 py-3 px-4 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500 text-base"
               name="email"
               type="email"
               value={form.email}
               onChange={handleChange}
               placeholder="Enter your email"
               required
+              style={{ minWidth: 0 }}
             />
           </RevealOnScroll>
 
@@ -222,7 +225,7 @@ const BillingForm = () => {
           <RevealOnScroll delay={0.8}>
             <div className="relative w-full">
               <input
-                className="mb-4 p-3 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="mb-2 py-3 px-4 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500 text-base"
                 name="password"
                 type={passwordVisible ? "text" : "password"}
                 value={form.password}
@@ -230,11 +233,13 @@ const BillingForm = () => {
                 placeholder="Create a password"
                 required
                 minLength={8}
+                style={{ minWidth: 0 }}
               />
               <button
                 type="button"
                 onClick={() => setPasswordVisible(!passwordVisible)}
                 className="absolute right-3 top-3.5 text-gray-400 hover:text-amber-500 transition-colors"
+                tabIndex={-1}
               >
                 <Image
                   src={passwordVisible ? "/svgs/eyes.svg" : "/svgs/eyesnot.svg"}
@@ -257,39 +262,15 @@ const BillingForm = () => {
           <RevealOnScroll delay={0.8}>
             <div className="relative w-full">
               <input
-                className="mb-4 p-3 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="mb-2 py-3 px-4 w-full bg-[#202020] text-white border border-gray-700 rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500 text-base"
                 name="confirmPassword"
                 type={confirmPasswordVisible ? "text" : "password"}
                 value={form.confirmPassword}
                 onChange={handleChange}
                 placeholder="Confirm password"
                 required
+                style={{ minWidth: 0 }}
               />
-
-              {/* Terms */}
-              <div className="flex items-center mb-2 mt-2">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  checked={form.termsAccepted || false}
-                  onChange={(e) =>
-                    setForm({ ...form, termsAccepted: e.target.checked })
-                  }
-                  className="mr-2 accent-amber-500"
-                  required
-                />
-                <label htmlFor="terms" className="text-sm text-gray-300">
-                  I have read and agree to the{" "}
-                  <Link
-                    href="/terms"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-amber-500 underline hover:text-amber-400"
-                  >
-                    Terms and Conditions
-                  </Link>
-                </label>
-              </div>
 
               <button
                 type="button"
@@ -297,6 +278,7 @@ const BillingForm = () => {
                   setConfirmPasswordVisible(!confirmPasswordVisible)
                 }
                 className="absolute right-3 top-3.5 text-gray-400 hover:text-amber-500 transition-colors"
+                tabIndex={-1}
               >
                 <Image
                   src={
@@ -312,6 +294,31 @@ const BillingForm = () => {
             </div>
           </RevealOnScroll>
 
+          {/* Terms */}
+          <div className="flex items-center mb-2 mt-2 w-full">
+            <input
+              type="checkbox"
+              id="terms"
+              checked={form.termsAccepted || false}
+              onChange={(e) =>
+                setForm({ ...form, termsAccepted: e.target.checked })
+              }
+              className="mr-2 accent-amber-500"
+              required
+            />
+            <label htmlFor="terms" className="text-sm text-gray-300">
+              I have read and agree to the{" "}
+              <Link
+                href="/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-500 underline hover:text-amber-400"
+              >
+                Terms and Conditions
+              </Link>
+            </label>
+          </div>
+
           {showConfirmPasswordError && (
             <div className="w-full text-red-500 text-sm">
               Passwords do not match
@@ -322,7 +329,7 @@ const BillingForm = () => {
           <RevealOnScroll delay={1.0}>
             <button
               type="submit"
-              className={`mt-4 border border-amber-500 text-white px-6 py-3 rounded-lg transition-colors font-medium w-full ${
+              className={`mt-4 border border-amber-500 text-white py-3 px-4 rounded-lg transition-colors font-medium w-full text-base ${
                 isLoading
                   ? "bg-amber-600/50 cursor-not-allowed"
                   : "hover:bg-amber-600 cursor-pointer"
@@ -339,6 +346,7 @@ const BillingForm = () => {
                 !passwordsMatch ||
                 !passwordMeetsRequirements
               }
+              style={{ minWidth: 0 }}
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
