@@ -167,68 +167,69 @@ export default function Home() {
   return (
     <main className="relative text-gray-800">
       <script src="https://cdn.lordicon.com/lordicon.js"></script>
-      {/* Hero Section */}
-      <section className="min-h-[80vh] flex flex-col items-center justify-center pt-16 md:pt-20 pb-20 md:pb-32 px-2 md:px-8 lg:px-16">
-        <h1 className="text-2xl md:text-4xl font-serif font-bold text-amber-500 mb-6 md:mb-10 text-center">
-          Himesh's Communication Mastery Mechanics
-        </h1>
-        {isSessionActive ? (
-          ""
-        ) : (
-          <p className="text-base md:text-lg text-white mb-8 md:mb-14 max-w-2xl mx-auto text-center">
-            Transform your speaking skills and command every conversation with
-            confidence
-          </p>
-        )}
-
-        <div className="flex flex-col items-center w-full max-w-full md:max-w-3xl lg:max-w-[70vw]">
+        <section className="min-h-[80vh] flex flex-col items-center justify-center pt-16 md:pt-20 pb-20 md:pb-32 px-2 md:px-8 lg:px-16">
+          <h1 className="text-2xl md:text-4xl font-serif font-bold text-amber-500 mb-6 md:mb-10 text-center">
+            Himesh's Communication Mastery Mechanics
+          </h1>
           {isSessionActive ? (
-            <div className="flex w-full p-0.5 mb-8 md:mb-10 max-w-full md:max-w-4xl">
-              <motion.div
-                initial={{ opacity: 0, y: -12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full bg-white text-gray-800 rounded-xl shadow-md p-4 md:p-16 lg:p-20 mb-8 border border-gray-200 flex flex-col items-center"
-              >
-                <h2 className="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-center">
-                  Welcome Back!{" "}
-                  {session?.user?.user_metadata?.username || "User"}
-                </h2>
-                <p className="text-base md:text-lg text-gray-600 mb-4 md:mb-6 text-center max-w-2xl">
-                  You’ve shown up. Now keep pushing. Every rep — every lesson —
-                  makes you a more powerful, confident communicator. Let’s level
-                  up your communication game, one push-up at a time.
-                </p>
-                <Lordicon />
-              </motion.div>
-            </div>
+            ""
           ) : (
-            <div className="w-full max-w-full md:max-w-4xl aspect-video rounded-xl shadow-2xl mb-8 md:mb-16 overflow-x-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="text-center max-w-full mx-auto"
-              >
-                <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-                  <iframe
-                    src="https://youtube/y3kk8iyeF2U?feature=shared"
-                    allow="autoplay"
-                    className="absolute top-0 left-0 w-full h-full rounded-xl"
-                    style={{ minHeight: "180px" }}
-                  />
-                </div>
-              </motion.div>
-            </div>
+            <p className="text-base md:text-lg text-white mb-8 md:mb-14 max-w-2xl mx-auto text-center">
+          Transform your speaking skills and command every conversation with
+          confidence
+            </p>
           )}
 
-          <CTAButton href={isSessionActive ? "/Courses" : "/dashboard/Billing"}>
-            {isSessionActive ? "Go to courses" : "Join Now"}
-          </CTAButton>
-        </div>
-      </section>
+          <div className="flex flex-col items-center w-full max-w-full md:max-w-3xl lg:max-w-[70vw]">
+            {isSessionActive ? (
+          <div className="flex w-full p-0.5 mb-8 md:mb-10 max-w-full md:max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="w-full bg-white text-gray-800 rounded-xl shadow-md p-4 md:p-16 lg:p-20 mb-8 border border-gray-200 flex flex-col items-center"
+            >
+              <h2 className="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-center">
+            Welcome Back!{" "}
+            {session?.user?.user_metadata?.username || "User"}
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 mb-4 md:mb-6 text-center max-w-2xl">
+            You’ve shown up. Now keep pushing. Every rep — every lesson —
+            makes you a more powerful, confident communicator. Let’s level
+            up your communication game, one push-up at a time.
+              </p>
+              <Lordicon />
+            </motion.div>
+          </div>
+            ) : (
+          <div className="w-full max-w-full md:max-w-4xl aspect-video rounded-xl shadow-2xl mb-8 md:mb-16 overflow-x-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center max-w-full mx-auto"
+            >
+              <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+            <iframe
+              src="https://www.youtube.com/embed/y3kk8iyeF2U"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              title="Communication Mastery Mechanics Intro"
+              className="absolute top-0 left-0 w-full h-full rounded-xl"
+              style={{ minHeight: "180px" }}
+            />
+              </div>
+            </motion.div>
+          </div>
+            )}
 
-      {/* What You'll Learn Section */}
+            <CTAButton href={isSessionActive ? "/Courses" : "/dashboard/Billing"}>
+          {isSessionActive ? "Go to courses" : "Join Now"}
+            </CTAButton>
+          </div>
+        </section>
+
+        {/* What You'll Learn Section */}
       <section className="py-16 md:py-24 flex flex-col items-center justify-center px-2 md:px-8 lg:px-16 max-w-7xl mx-auto">
         {isSessionActive ? (
           <RevealOnScroll>
