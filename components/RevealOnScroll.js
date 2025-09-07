@@ -27,7 +27,7 @@ export default function RevealOnScroll({ children, delay = 0.2 }) {
         visible: { opacity: 1, scale: 1 },
       }}
       transition={{
-        duration: 0.4,
+        duration: 0.2,
         ease: [0.16, 1, 0.3, 1],
         delay,
       }}
