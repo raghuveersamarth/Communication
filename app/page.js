@@ -211,7 +211,7 @@ export default function Home() {
             >
               <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
             <iframe
-              src="https://www.youtube.com/embed/y3kk8iyeF2U"
+              src="https://youtu.be/y3kk8iyeF2U?feature=shared"
               allow="autoplay; encrypted-media"
               allowFullScreen
               title="Communication Mastery Mechanics Intro"
