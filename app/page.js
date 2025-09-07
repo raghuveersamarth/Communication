@@ -207,28 +207,23 @@ export default function Home() {
               </motion.div>
             </div>
           ) : (
-            <div className="w-full max-w-full md:max-w-4xl aspect-video rounded-xl shadow-2xl mb-8 md:mb-16 overflow-x-auto">
+            <div className="w-full max-w-full md:max-w-4xl rounded-xl shadow-2xl mb-8 md:mb-16 overflow-x-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
                 className="text-center max-w-full mx-auto"
               >
-                <div
-                  className="relative w-full"
-                  style={{ paddingTop: "56.25%" }}
-                >
+
                   <iframe
-                    width="656"
-                    height="369"
+                    className="absolute top-0 left-0 w-full h-full rounded-xl"
                     src="https://www.youtube.com/embed/y3kk8iyeF2U"
                     title="Communication Mastery Mechanics"
-                    frameborder="0"
+                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
                   ></iframe>
-                </div>
               </motion.div>
             </div>
           )}
