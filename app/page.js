@@ -212,10 +212,10 @@ export default function Home() {
                 className="w-full h-full"
                 src="https://www.youtube.com/embed/y3kk8iyeF2U"
                 title="Communication Mastery Mechanics"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
               ></iframe>
             </div>
           )}
