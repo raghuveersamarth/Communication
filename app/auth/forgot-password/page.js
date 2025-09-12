@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
             setMessage('')
 
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
-              redirectTo: `https://www.himeshvenk/auth/reset`
+              redirectTo: `https://himeshvenk.com/auth/reset`
             })
 
             if (error) {
