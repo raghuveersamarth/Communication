@@ -32,7 +32,7 @@ const Plan = () => {
                   <span className="text-gray-400 text-base sm:text-lg line-through">
                     ₹24397
                   </span>
-                  <span className="text-2xl sm:text-3xl text-amber-400">9397</span>
+                  <span className="text-2xl sm:text-3xl text-amber-400">₹14397</span>
                 </h2>
               </div>
             </RevealOnScroll>
