@@ -19,9 +19,8 @@ export default function PrivacyPolicy() {
         </RevealOnScroll>
 
         {/* Content */}
-        <RevealOnScroll delay={0.1}>
-          <div className="space-y-10 text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-            
+        <div className="space-y-10 text-base sm:text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+          <RevealOnScroll delay={0.1}>
             <p>
               At{" "}
               <span className="font-semibold text-primary-700 dark:text-primary-300">
@@ -32,16 +31,17 @@ export default function PrivacyPolicy() {
               use, and safeguard your data when you access our courses and
               website.
             </p>
-
-            <div>
+          </RevealOnScroll>
+          <div>
+            <RevealOnScroll delay={0.2}>
               <h2 className="text-2xl lg:text-3xl font-bold text-amber-600 mb-4">
                 1. Information We Collect
               </h2>
               <ul className="list-disc pl-6 space-y-2">
                 <li>
-                  <strong>Email Address:</strong> We collect your Gmail ID during
-                  registration and payment to grant you course access and share
-                  updates.
+                  <strong>Email Address:</strong> We collect your Gmail ID
+                  during registration and payment to grant you course access and
+                  share updates.
                 </li>
                 <li>
                   <strong>Phone Number:</strong> Used for verification and
@@ -56,9 +56,11 @@ export default function PrivacyPolicy() {
                   on our platform.
                 </li>
               </ul>
-            </div>
+            </RevealOnScroll>
+          </div>
 
-            <div>
+          <div>
+            <RevealOnScroll delay={0.3}>
               <h2 className="text-2xl lg:text-3xl font-bold text-amber-600 mb-4">
                 2. How We Use Your Information
               </h2>
@@ -66,14 +68,16 @@ export default function PrivacyPolicy() {
                 <li>To provide you with access to purchased course content.</li>
                 <li>To verify your identity and maintain account security.</li>
                 <li>
-                  To send important updates, confirmations, or notices related to
-                  your purchase.
+                  To send important updates, confirmations, or notices related
+                  to your purchase.
                 </li>
                 <li>To comply with legal and regulatory requirements.</li>
               </ul>
-            </div>
+            </RevealOnScroll>
+          </div>
 
-            <div>
+          <div>
+            <RevealOnScroll delay={0.4}>
               <h2 className="text-2xl lg:text-3xl font-bold text-amber-600 mb-4">
                 3. Data Storage and Security
               </h2>
@@ -81,23 +85,28 @@ export default function PrivacyPolicy() {
                 Your personal information is securely stored in our database
                 hosted on Supabase. We take appropriate technical and
                 organizational measures to protect your information. However, no
-                method of electronic storage or transmission over the internet is
-                completely secure, and we cannot guarantee absolute security.
+                method of electronic storage or transmission over the internet
+                is completely secure, and we cannot guarantee absolute security.
               </p>
-            </div>
+            </RevealOnScroll>
+          </div>
 
-            <div>
+          <div>
+            <RevealOnScroll delay={0.5}>
               <h2 className="text-2xl lg:text-3xl font-bold text-amber-600 mb-4">
                 4. Payments
               </h2>
               <p>
                 All payments are processed through <strong>Razorpay</strong>. We
                 do not directly store your financial details. Razorpay’s own
-                privacy and security policies apply to your payment transactions.
+                privacy and security policies apply to your payment
+                transactions.
               </p>
-            </div>
+            </RevealOnScroll>
+          </div>
 
-            <div>
+          <div>
+            <RevealOnScroll delay={0.6}>
               <h2 className="text-2xl lg:text-3xl font-bold text-amber-600 mb-4">
                 5. No Refund Policy
               </h2>
@@ -107,40 +116,46 @@ export default function PrivacyPolicy() {
                 receive immediate course access, and no refunds or cancellations
                 will be provided under any circumstances.
               </p>
-            </div>
+            </RevealOnScroll>
+          </div>
 
-            <div>
+          <div>
+            <RevealOnScroll delay={0.7}>
               <h2 className="text-2xl lg:text-3xl font-bold text-amber-600 mb-4">
                 6. User Responsibility & Disclaimer
               </h2>
               <p>
-                By accessing and using our website, you acknowledge and agree that
-                you are doing so at your own risk. We provide educational content
-                “as is” without warranties of any kind. We are not liable for any
-                damages, losses, or issues arising from the use of our platform,
-                courses, or services.
+                By accessing and using our website, you acknowledge and agree
+                that you are doing so at your own risk. We provide educational
+                content “as is” without warranties of any kind. We are not
+                liable for any damages, losses, or issues arising from the use
+                of our platform, courses, or services.
               </p>
-            </div>
+            </RevealOnScroll>
+          </div>
 
-            <div>
+          <div>
+            <RevealOnScroll delay={0.8}>
               <h2 className="text-2xl lg:text-3xl font-bold text-amber-600 mb-4">
                 7. Changes to This Policy
               </h2>
               <p>
                 We reserve the right to update or modify this Privacy Policy at
-                any time. If changes are made, we will notify users via email or a
-                notice on our website. Your continued use of our services after
-                updates constitutes acceptance of the revised policy.
+                any time. If changes are made, we will notify users via email or
+                a notice on our website. Your continued use of our services
+                after updates constitutes acceptance of the revised policy.
               </p>
-            </div>
+            </RevealOnScroll>
+          </div>
 
-            <div>
+          <div>
+            <RevealOnScroll delay={0.9}>
               <h2 className="text-2xl lg:text-3xl font-bold text-amber-600 mb-4">
                 8. Contact Us
               </h2>
               <p>
-                If you have any questions about this Privacy Policy or your data,
-                please contact us at:{" "}
+                If you have any questions about this Privacy Policy or your
+                data, please contact us at:{" "}
                 <a
                   href="mailto:vrajhimesh@gmail.com"
                   className="font-medium text-primary-700 dark:text-primary-300 underline"
@@ -148,9 +163,9 @@ export default function PrivacyPolicy() {
                   vrajhimesh@gmail.com
                 </a>
               </p>
-            </div>
+            </RevealOnScroll>
           </div>
-        </RevealOnScroll>
+        </div>
 
         {/* Back button */}
         <RevealOnScroll delay={0.3}>
