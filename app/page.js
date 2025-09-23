@@ -102,7 +102,7 @@ export default function Home() {
       src: "https://cdn.lordicon.com/tulgnpqx.json",
       title: "Communication Course",
       description:
-        "13 powerful modules — built from real experience to help you go from awkward to confident, step by step.",
+        "Step by Step, Easy To Follow Training To Master Communication ",
     },
     {
       src: "https://cdn.lordicon.com/tufeszbf.json",
@@ -112,7 +112,7 @@ export default function Home() {
     },
     {
       src: "https://cdn.lordicon.com/ckdooote.json",
-      title: "Communication Challenges",
+      title: "Challenges",
       description:
         "Practical tasks designed to push you out of your comfort zone and build real speaking confidence.",
     },
@@ -124,38 +124,36 @@ export default function Home() {
     },
     {
       src: "https://cdn.lordicon.com/aksvbzmu.json",
-      title: "1-on-1 Feedback Sessions",
-      description:
-        "Personalized feedback on your speaking, with direct pointers on what to improve — so you’re not just practicing, you’re progressing with clarity.",
+      title: "Mentorship Calls",
+      description: "1-1 calls with himesh.",
     },
     {
-      src: "https://cdn.lordicon.com/twpfmtiv.json",
-      title: "Lifetime Access",
-      description:
-        "See real change — or stay in the course free until you do. I’m here until it clicks.",
+      src: "https://cdn.lordicon.com/uixwkrvw.json",
+      title: "Free updates",
+      description: "Future updates will be provided at no extra cost.",
     },
   ];
 
   const benefits = [
-    {
-      title: "🧑‍💼Working Professionals",
-      description:
-        "For people who want to speak clearly and confidently at work or in meetings.",
-    },
     {
       title: "👔 Business Owners",
       description:
         "For people who need to pitch, lead, and communicate their ideas with impact.",
     },
     {
-      title: "🎥 Content Creators",
+      title: "🧑‍💼Working Professionals",
       description:
-        "For people who want to speak fluently on camera and connect better with their audience.",
+        "For people who want to speak clearly and confidently at work or in meetings.",
     },
     {
       title: "🎓 Students",
       description:
         "For people who want to speak up, stand out, and feel confident in any situation",
+    },
+    {
+      title: "🎥 Content Creators",
+      description:
+        "For people who want to speak fluently on camera and connect better with their audience.",
     },
     {
       title: "🧑‍💻Aspiring Entrepreneurs",
@@ -296,21 +294,8 @@ export default function Home() {
           <div className="flex flex-col gap-6 md:gap-10 w-full md:w-[60vw] lg:w-[60vw] text-white mb-10 md:mb-16">
             <RevealOnScroll>
               <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
-                This is the only communication system you’ll ever need to go
-                from blank mind to magnetic voice in 30 days. No need to read
-                100 books or sit through boring public speaking classes.
-              </p>
-            </RevealOnScroll>
-            <RevealOnScroll>
-              <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
                 This course is built from real experience. Everything you’ll
                 learn is what actually worked for me and my clients.
-              </p>
-            </RevealOnScroll>
-            <RevealOnScroll>
-              <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
-                You’ll learn Communication Mechanics — a practical system to
-                help you speak fluently, confidently, and with presence.
               </p>
             </RevealOnScroll>
             <RevealOnScroll>
@@ -321,8 +306,23 @@ export default function Home() {
             </RevealOnScroll>
             <RevealOnScroll>
               <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
-                If you’re ready to speak with clarity and confidence, this is
-                the system that will help you do it.
+                I went from stuttering and insecure to filming 30-minute YouTube
+                videos with no cuts, no script, and no stutter — I figured out
+                how to do it, it transformed my life, and if I can do it, you
+                can too.
+              </p>
+            </RevealOnScroll>
+            <RevealOnScroll>
+              <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
+                You’ll have my 1-1 feedback on your progress and a like-minded
+                community that helps you stay consistent and confident
+              </p>
+            </RevealOnScroll>
+            <RevealOnScroll>
+              <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
+                This is the only communication system you’ll ever need to go
+                from blank mind to magnetic voice in 30 days. No need to read
+                100 books or sit through boring public speaking classes.
               </p>
             </RevealOnScroll>
           </div>

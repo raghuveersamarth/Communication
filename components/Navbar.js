@@ -120,7 +120,7 @@ const Navbar = () => {
               />
             </Link>
             <Link href="/" className="text-[#ff6201] hover:text-gray-300">
-              COMMUNICATION
+              CMM COMMUNITY
             </Link>
           </div>
 

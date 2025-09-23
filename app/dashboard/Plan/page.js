@@ -17,7 +17,7 @@ const Plan = () => {
       <div className="flex justify-center items-center p-4 sm:p-6 md:p-10 w-full">
         <RevealOnScroll className="flex items-center w-full max-w-sm sm:max-w-md lg:max-w-lg">
           <div className="onetimepayment p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-between w-full min-h-[500px] sm:min-h-[550px] lg:min-h-[600px] max-h-[90vh] border border-gray-700 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-amber-500/10 transition-all duration-300 hover:border-amber-500/30 overflow-hidden bg-[#18181b]">
-            
+           
             {/* Header Section */}
             <div className="flex flex-col items-center text-center w-full">
               <RevealOnScroll delay={0.2} className="w-full">
