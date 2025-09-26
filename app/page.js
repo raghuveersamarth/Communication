@@ -120,7 +120,7 @@ export default function Home() {
       src: "https://cdn.lordicon.com/ygymzvsj.json",
       title: "Transformation Guarantee",
       description:
-        "See real change — or stay in the course free until you do. I’m here until it clicks.",
+        "Himesh will personally review you 1-1 and ensure you see results.",
     },
     {
       src: "https://cdn.lordicon.com/aksvbzmu.json",
