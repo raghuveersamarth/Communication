@@ -29,6 +29,7 @@ const Navbar = () => {
         if (error) throw error;
 
         setSession(session);
+        console.log(session);
         setIsSessionActive(
           !!session &&
             ["paid", "completed"].includes(
@@ -175,6 +176,9 @@ const Navbar = () => {
                 >
                   Explore Courses
                 </Link>
+                <button onClick={handleLogout} className="text-white hover:text-gray-300">
+                  sign out
+                </button>
 
                 {/* Help Dropdown */}
                 <div className="relative group">
