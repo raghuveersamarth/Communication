@@ -176,9 +176,6 @@ const Navbar = () => {
                 >
                   Explore Courses
                 </Link>
-                <button onClick={handleLogout} className="text-white hover:text-gray-300">
-                  sign out
-                </button>
 
                 {/* Help Dropdown */}
                 <div className="relative group">
