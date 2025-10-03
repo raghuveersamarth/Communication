@@ -380,7 +380,7 @@ const BillingForm = () => {
                   Processing...
                 </span>
               ) : (
-                "Redirect to payment and pay ₹9397"
+                "One time - ₹9397"
               )}
             </button>
           </RevealOnScroll>
