@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Inter } from "next/font/google";
 import { motion } from "framer-motion";
 import Footer from "@/components/Footer";
 import RevealOnScroll from "@/components/RevealOnScroll";
 import { supabase } from "./lib/supabase";
 
+const inter = Inter({ subsets: ["latin"] });
 const CTAButton = ({ href, children }) => (
   <Link
     href={href}
@@ -168,19 +170,27 @@ export default function Home() {
   ];
 
   return (
-    <main className="relative text-gray-800">
+    <main className={"relative text-gray-800 " + inter.className}>
       <script src="https://cdn.lordicon.com/lordicon.js"></script>
-      <section className="min-h-[80vh] flex flex-col items-center justify-center pt-16 md:pt-20 pb-20 md:pb-32 px-2 md:px-8 lg:px-16">
-        <h1 className="text-2xl md:text-4xl font-serif font-bold text-amber-500 mb-6 md:mb-10 text-center">
-          Himesh's Communication Mastery Mechanics
+      <section className="min-h-[80vh] flex flex-col items-center justify-center pt-16 md:pt-20 pb-16 md:pb-32 px-2 sm:px-4 md:px-8 lg:px-16 w-full">
+        <h1 className={"text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-light text-amber-500 mb-2 md:mb-4 text-center " + inter.className}>
+          COMMUNICATION IS 
         </h1>
+        <h2 className={"text-2xl sm:text-3xl md:text-5xl font-serif font-extrabold text-amber-500 mb-6 md:mb-10 text-center " + inter.className}>
+         A SKILL
+        </h2>
         {isSessionActive ? (
           ""
         ) : (
-          <p className="text-base md:text-lg text-white mb-8 md:mb-14 max-w-2xl mx-auto text-center">
-            Transform your speaking skills and command every conversation with
-            confidence
+          <div className="flex flex-row gap-1.5">
+
+          <p className="text-base sm:text-lg font-light md:text-2xl text-white mb-8 md:mb-14 max-w-2xl mx-auto text-center">
+            We will teach you how to 
           </p>
+          <p className="text-base sm:text-lg font-bold md:text-2xl text-white mb-8 md:mb-14 max-w-2xl mx-auto text-center">
+            master it
+          </p>
+          </div>
         )}
 
         <div className="flex flex-col items-center w-full max-w-full md:max-w-3xl lg:max-w-[70vw]">
@@ -190,13 +200,13 @@ export default function Home() {
                 initial={{ opacity: 0, y: -12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="w-full bg-white text-gray-800 rounded-xl shadow-md p-4 md:p-16 lg:p-20 mb-8 border border-gray-200 flex flex-col items-center"
+                className="w-full bg-white text-gray-800 rounded-xl shadow-md p-4 sm:p-8 md:p-16 lg:p-20 mb-8 border border-gray-200 flex flex-col items-center"
               >
-                <h2 className="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-center">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 md:mb-4 text-center">
                   Welcome Back!{" "}
                   {session?.user?.user_metadata?.username || "User"}
                 </h2>
-                <p className="text-base md:text-lg text-gray-600 mb-4 md:mb-6 text-center max-w-2xl">
+                <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4 md:mb-6 text-center max-w-2xl">
                   You’ve shown up. Now keep pushing. Every rep — every lesson —
                   makes you a more powerful, confident communicator. Let’s level
                   up your communication game, one push-up at a time.
@@ -207,7 +217,7 @@ export default function Home() {
           ) : (
             <div className="w-full max-w-full md:max-w-4xl aspect-video rounded-xl shadow-2xl mb-8 md:mb-16 overflow-x-auto">
               <iframe
-                className="w-full h-full"
+                className="w-full h-full min-h-[200px] sm:min-h-[300px]"
                 src="https://www.youtube.com/embed/y3kk8iyeF2U"
                 title="Communication Mastery Mechanics"
                 frameBorder="0"
@@ -225,22 +235,22 @@ export default function Home() {
       </section>
 
       {/* What You'll Learn Section */}
-      <section className="py-16 md:py-24 flex flex-col items-center justify-center px-2 md:px-8 lg:px-16 max-w-7xl mx-auto">
+      <section className="py-12 sm:py-16 md:py-24 flex flex-col items-center justify-center px-2 sm:px-4 md:px-8 lg:px-16 max-w-7xl mx-auto w-full">
         {isSessionActive ? (
           <RevealOnScroll>
-            <h2 className="text-2xl md:text-3xl font-bold text-amber-500 text-center mb-10 md:mb-20">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-amber-500 text-center mb-8 sm:mb-10 md:mb-20">
               What You Will Master
             </h2>
           </RevealOnScroll>
         ) : (
           <RevealOnScroll>
-            <h2 className="text-2xl md:text-3xl font-bold text-amber-500 text-center mb-10 md:mb-20">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-amber-500 text-center mb-8 sm:mb-10 md:mb-20">
               What all you get
             </h2>
           </RevealOnScroll>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 max-w-full md:max-w-6xl mx-auto mb-10 md:mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 max-w-full md:max-w-6xl mx-auto mb-10 md:mb-20 w-full">
           {features.map((item, index) => (
             <RevealOnScroll key={index} delay={index * 0.2}>
               <FeatureCard {...item} />
@@ -259,15 +269,15 @@ export default function Home() {
 
       {/* Who Benefits Section */}
       {!isSessionActive && (
-        <section className="py-16 md:py-24 px-2 md:px-8 lg:px-16 text-[white] flex flex-col items-center justify-center">
-          <div className="max-w-7xl mx-auto mb-10 md:mb-20">
+        <section className="py-12 sm:py-16 md:py-24 px-2 sm:px-4 md:px-8 lg:px-16 text-[white] flex flex-col items-center justify-center w-full">
+          <div className="max-w-7xl mx-auto mb-8 sm:mb-10 md:mb-20 w-full">
             <RevealOnScroll>
-              <h2 className="text-2xl md:text-3xl font-bold text-amber-500 text-center mb-10 md:mb-20">
+              <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-amber-500 text-center mb-8 sm:mb-10 md:mb-20">
                 Who is this for
               </h2>
             </RevealOnScroll>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 w-full">
               {benefits.map((item, index) => (
                 <RevealOnScroll key={index} delay={index * 0.2}>
                   <BenefitCard {...item} />
@@ -284,28 +294,28 @@ export default function Home() {
 
       {/* Why This Course & Coach Section */}
       {!isSessionActive && (
-        <section className="py-16 md:py-24 px-2 md:px-8 lg:px-16 max-w-5xl mx-auto text-gray-800 flex flex-col items-center justify-center">
+        <section className="py-12 sm:py-16 md:py-24 px-2 sm:px-4 md:px-8 lg:px-16 max-w-5xl mx-auto text-gray-800 flex flex-col items-center justify-center w-full">
           <RevealOnScroll>
-            <h2 className="text-2xl md:text-3xl font-bold text-amber-500 text-center mb-10 md:mb-16">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-amber-500 text-center mb-8 sm:mb-10 md:mb-16">
               Why This Course?
             </h2>
           </RevealOnScroll>
 
-          <div className="flex flex-col gap-6 md:gap-10 w-full md:w-[60vw] lg:w-[60vw] text-white mb-10 md:mb-16">
+          <div className="flex flex-col gap-4 sm:gap-6 md:gap-10 w-full md:w-[80vw] lg:w-[60vw] text-white mb-8 sm:mb-10 md:mb-16">
             <RevealOnScroll>
-              <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
+              <p className="text-base sm:text-lg md:text-xl leading-relaxed bg-[#18181b] rounded-4xl p-4 sm:p-6 md:p-8 shadow">
                 This course is built from real experience. Everything you’ll
                 learn is what actually worked for me and my clients.
               </p>
             </RevealOnScroll>
             <RevealOnScroll>
-              <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
+              <p className="text-base sm:text-lg md:text-xl leading-relaxed bg-[#18181b] rounded-4xl p-4 sm:p-6 md:p-8 shadow">
                 You don’t need hours each day. Just 15 to 20 minutes of focused
                 practice is enough to start seeing progress.
               </p>
             </RevealOnScroll>
             <RevealOnScroll>
-              <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
+              <p className="text-base sm:text-lg md:text-xl leading-relaxed bg-[#18181b] rounded-4xl p-4 sm:p-6 md:p-8 shadow">
                 I went from stuttering and insecure to filming 30-minute YouTube
                 videos with no cuts, no script, and no stutter — I figured out
                 how to do it, it transformed my life, and if I can do it, you
@@ -313,13 +323,13 @@ export default function Home() {
               </p>
             </RevealOnScroll>
             <RevealOnScroll>
-              <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
+              <p className="text-base sm:text-lg md:text-xl leading-relaxed bg-[#18181b] rounded-4xl p-4 sm:p-6 md:p-8 shadow">
                 You’ll have my 1-1 feedback on your progress and a like-minded
                 community that helps you stay consistent and confident
               </p>
             </RevealOnScroll>
             <RevealOnScroll>
-              <p className="text-base md:text-lg leading-relaxed bg-[#18181b] rounded-4xl p-4 md:p-8 shadow">
+              <p className="text-base sm:text-lg md:text-xl leading-relaxed bg-[#18181b] rounded-4xl p-4 sm:p-6 md:p-8 shadow">
                 This is the only communication system you’ll ever need to go
                 from blank mind to magnetic voice in 30 days. No need to read
                 100 books or sit through boring public speaking classes.
@@ -328,14 +338,14 @@ export default function Home() {
           </div>
           {/* Coach Section */}
           <RevealOnScroll>
-            <h2 className="text-2xl md:text-3xl font-bold text-amber-500 text-center mb-10 md:mb-16">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-amber-500 text-center mb-8 sm:mb-10 md:mb-16">
               About Your Coach
             </h2>
           </RevealOnScroll>
 
           <RevealOnScroll>
-            <div className="flex flex-col md:flex-row gap-6 md:gap-14 items-center text-[white] p-4 md:p-12 rounded-xl shadow-md">
-              <div className="w-full md:w-1/3 mb-4 md:mb-0">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-14 items-center text-[white] p-4 sm:p-8 md:p-12 rounded-xl shadow-md w-full">
+              <div className="w-full md:w-1/3 mb-4 md:mb-0 flex-shrink-0">
                 <Image
                   src="/him2.jpg"
                   alt="Coach Himesh"
@@ -347,10 +357,10 @@ export default function Home() {
               </div>
 
               <div className="w-full md:w-2/3 space-y-2 md:space-y-4">
-                <h3 className="text-xl md:text-2xl font-bold text-amber-500">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-amber-500">
                   Himesh
                 </h3>
-                <p className="text-white text-sm md:text-base">
+                <p className="text-white text-sm sm:text-base md:text-lg">
                   I was born in India, in a place where no one spoke English. I
                   used to stutter, avoid people, and sucked at communication. I
                   built everything from ground zero. Now I speak confidently… No
@@ -358,13 +368,13 @@ export default function Home() {
                   take And make people feel emotions through my words. If I can
                   do it, so can you.
                 </p>
-                <p className="text-white text-sm md:text-base">
+                <p className="text-white text-sm sm:text-base md:text-lg">
                   I've worked with everyone from Fortune 500 executives to
                   aspiring YouTubers, helping them overcome speech anxiety,
                   refine their delivery, and develop a magnetic speaking
                   presence.
                 </p>
-                <p className="text-white font-medium text-sm md:text-base">
+                <p className="text-white font-medium text-sm sm:text-base md:text-lg">
                   My mission is to equip you with the skills to express yourself
                   with clarity, confidence, and conviction in any situation.
                 </p>
@@ -372,7 +382,7 @@ export default function Home() {
             </div>
           </RevealOnScroll>
 
-          <RevealOnScroll className="flex justify-center mt-10 self-center">
+          <RevealOnScroll className="flex justify-center mt-8 sm:mt-10 self-center">
             <CTAButton href="/dashboard/Billing">
               Transform Your Communication
             </CTAButton>

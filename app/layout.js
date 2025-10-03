@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Inter } from "next/font/google";
+import Analytics from "@/components/Analytics";
 import { SessionProvider } from "./context/sessionwrapper";
 
 const geistSans = Geist({
