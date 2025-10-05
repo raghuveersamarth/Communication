@@ -89,7 +89,7 @@ const BillingForm = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           courseId: "comm-course",
-          amount: 9397,
+          amount: 9899,
           email: form.email,
           username: form.username,
           phone: form.phone,
@@ -104,7 +104,7 @@ const BillingForm = () => {
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: 9397 * 100,
+        amount: 9899 * 100,
         currency: "INR",
         order_id: orderId,
         name: "Communication Course",
@@ -380,7 +380,7 @@ const BillingForm = () => {
                   Processing...
                 </span>
               ) : (
-                "One time - ₹9397"
+                "One-Time Payment - ₹9899"
               )}
             </button>
           </RevealOnScroll>
