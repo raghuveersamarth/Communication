@@ -124,11 +124,11 @@ export default function Home() {
       description:
         "Himesh will personally review you 1-1 and ensure you see results.",
     },
-    {
-      src: "https://cdn.lordicon.com/aksvbzmu.json",
-      title: "Mentorship Calls",
-      description: "1-1 calls with himesh.",
-    },
+    // {
+    //   src: "https://cdn.lordicon.com/aksvbzmu.json",
+    //   title: "Mentorship Calls",
+    //   description: "1-1 calls with himesh.",
+    // },
     {
       src: "https://cdn.lordicon.com/uixwkrvw.json",
       title: "Free updates",
