@@ -218,7 +218,7 @@ export default function Home() {
             <div className="w-full max-w-full md:max-w-4xl aspect-video rounded-xl shadow-2xl mb-8 md:mb-16 overflow-x-auto">
               <iframe
                 className="w-full h-full min-h-[200px] sm:min-h-[300px]"
-                src="https://www.youtube.com/embed/ZRNTaRKZcBk"
+                src="https://www.youtube.com/embed/A6moY3EHcwk"
                 title="Communication Mastery Mechanics"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
