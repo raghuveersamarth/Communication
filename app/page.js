@@ -237,17 +237,17 @@ export default function Home() {
       {/* What You'll Learn Section */}
       <section className="py-12 sm:py-16 md:py-24 flex flex-col items-center justify-center px-2 sm:px-4 md:px-8 lg:px-16 max-w-7xl mx-auto w-full">
         {isSessionActive ? (
-          <RevealOnScroll>
+          // <RevealOnScroll>
             <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-amber-500 text-center mb-8 sm:mb-10 md:mb-20">
               What You Will Master
             </h2>
-          </RevealOnScroll>
+          // </RevealOnScroll>
         ) : (
-          <RevealOnScroll>
+          // <RevealOnScroll>
             <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-amber-500 text-center mb-8 sm:mb-10 md:mb-20">
               What all you get
             </h2>
-          </RevealOnScroll>
+          // </RevealOnScroll>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 max-w-full md:max-w-6xl mx-auto mb-10 md:mb-20 w-full">
@@ -271,11 +271,11 @@ export default function Home() {
       {!isSessionActive && (
         <section className="py-12 sm:py-16 md:py-24 px-2 sm:px-4 md:px-8 lg:px-16 text-[white] flex flex-col items-center justify-center w-full">
           <div className="max-w-7xl mx-auto mb-8 sm:mb-10 md:mb-20 w-full">
-            <RevealOnScroll>
+            {/* <RevealOnScroll> */}
               <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-amber-500 text-center mb-8 sm:mb-10 md:mb-20">
                 Who is this for
               </h2>
-            </RevealOnScroll>
+            {/* </RevealOnScroll> */}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 w-full">
               {benefits.map((item, index) => (
